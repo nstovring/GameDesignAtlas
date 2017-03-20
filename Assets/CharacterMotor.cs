@@ -43,7 +43,7 @@ public class CharacterMotor : MonoBehaviour
         }
         return 0;
     }
-    bool isHanging = false;
+    public bool isHanging = false;
 
     public void Movement()
     {
@@ -53,13 +53,10 @@ public class CharacterMotor : MonoBehaviour
         //    Debug.Log("Landing");
         //}
         myCharAnimator.SetDistFromGround(DistanceFromGround());
-        if (isHanging)
+       
+        if (Input.GetKeyUp(KeyCode.Space) && isHanging)
         {
-            if (Input.GetButton("Jump"))
-            {
-                isHanging = false;
-                myCharAnimator.HangOnLedge(false);
-            }
+            myCharAnimator.myAnimator.SetBool("Climbing", true);
         }
         if (DistanceFromGround()< 0.1f && !isHanging)
         {
@@ -103,6 +100,10 @@ public class CharacterMotor : MonoBehaviour
             moveDirection.y -= gravity*Time.deltaTime;
             controller.Move(moveDirection*Time.deltaTime);
             myCharAnimator.SetVelocity(controller.velocity);
+        }
+        else
+        {
+           
         }
     }
 
