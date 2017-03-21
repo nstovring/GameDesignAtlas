@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ItempPickUp : MonoBehaviour {
 
 	// Use this for initialization
@@ -47,5 +48,13 @@ public class ItempPickUp : MonoBehaviour {
                Debug.Log("activate ");
             }
         }
+
+        if (other.tag == "Boundarycheck")
+        {
+            Debug.Log("restart game");
+            LevelManager.lm.restartLevel();
+            
+        }
+
     }
 }
