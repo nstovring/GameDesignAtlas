@@ -14,7 +14,8 @@ public class LevelManager : MonoBehaviour {
 	public GameObject presentObjects;
 	public GameObject pastObjects;
     public GameObject alltimeObjects;
-
+    public CameraBlinding blindingShader;
+    public TimeShifting timeShifter;
     public int keyscollected = 0;
     public int spherescollected = 0;
 
@@ -33,6 +34,13 @@ public class LevelManager : MonoBehaviour {
 			//Make invisible
 			pastObjects.SetActive(false);
 		}
+        try {
+            blindingShader = GetComponent<CameraBlinding>();
+        }
+        catch
+        {
+            
+        }
 	}
 	
 	// Update is called once per frame

@@ -21,7 +21,10 @@ public class TimeShifting : MonoBehaviour {
 	}
 
 	public void changeTime (bool time) {
-		LevelManager.lm.changeTime (time);
+        CameraBlinding blinding = LevelManager.lm.blindingShader;
+        
+        blinding.time = time;
+        blinding.StartCoroutine("FlashScreen");
 	}
 
 
