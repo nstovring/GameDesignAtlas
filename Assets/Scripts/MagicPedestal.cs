@@ -5,15 +5,23 @@ using UnityEngine;
 
 public class MagicPedestal : MonoBehaviour, IInteractable {
 
-
+    public IList<ILinkable> LinkedObjects;
+    public List<Transform> LinkedTansforms;
     public void Interact()
     {
-        Debug.Log("Interacted with");
+        foreach (var item in LinkedObjects)
+        {
+            item.Activate();
+        }
     }
 
     // Use this for initialization
     void Start () {
-		
+        LinkedObjects = new List<ILinkable>();
+        foreach (var item in LinkedTansforms)
+        {
+            LinkedObjects.Add(item.GetComponent<MonoBehaviour>() as ILinkable);
+        }
 	}
 	
 	// Update is called once per frame

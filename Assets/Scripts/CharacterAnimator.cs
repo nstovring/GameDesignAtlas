@@ -15,8 +15,8 @@ public class CharacterAnimator : MonoBehaviour
     private float HSpeed;
     public void SetVelocity(Vector3 CharVelocity)
     {
-        HSpeed = Mathf.Lerp(HSpeed,CharVelocity.normalized.x * Mathf.Sign(CharVelocity.x),0.01f);
-        myAnimator.SetFloat("HSpeed", CharVelocity.normalized.sqrMagnitude);
+        HSpeed = Mathf.Lerp(HSpeed,CharVelocity.normalized.x * Mathf.Sign(CharVelocity.x),0.1f);
+        myAnimator.SetFloat("HSpeed", HSpeed);
     }
 
     private float VSpeed;

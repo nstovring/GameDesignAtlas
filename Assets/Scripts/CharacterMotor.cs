@@ -56,16 +56,13 @@ public class CharacterMotor : MonoBehaviour
 
     public void Movement()
     {
-        //if (DistanceFromGround() < 0.4 && IsFalling())
-        //{
-        //    myCharAnimator.SetVSpeed(1);
-        //    Debug.Log("Landing");
-        //}
-
- 
-
-
         myCharAnimator.SetDistFromGround(DistanceFromGround());
+
+        if (isLevitating)
+        {
+            Levitate();
+        }
+
         if (isHanging)
         {
             controller.enabled = false;
@@ -80,6 +77,7 @@ public class CharacterMotor : MonoBehaviour
       
         if (DistanceFromGround()< 0.1f && !isHanging)
         {
+            isLevitating = false;
             controller.enabled = true;
             if (wasInAir)
             {
@@ -87,10 +85,16 @@ public class CharacterMotor : MonoBehaviour
                 wasInAir = false;
             }
             myCharAnimator.Jump(false);
+
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            if (moveDirection.magnitude >= 0.1)
+
+
+            if (moveDirection.magnitude >= 0.5f)
                 transform.rotation = Quaternion.LookRotation(moveDirection);
+
             moveDirection *= speed;
+
+
             if (Input.GetButton("Jump"))
             {
                 myCharAnimator.Jump(true);
@@ -109,17 +113,11 @@ public class CharacterMotor : MonoBehaviour
 
         if (!isHanging)
         {
+            gravity = Mathf.Lerp(gravity, 20, 0.1f);
             moveDirection.y -= gravity*Time.deltaTime;
             controller.Move(moveDirection*Time.deltaTime);
             myCharAnimator.SetVelocity(controller.velocity);
         }
-    }
-
-    public IEnumerator StopJumpingDelayed(float delay)
-    {
-        yield return new WaitForSecondsRealtime(delay);
-        myCharAnimator.Jump(false);
-        wasInAir = false;
     }
 
     void OnTriggerEnter(Collider other)
@@ -132,21 +130,49 @@ public class CharacterMotor : MonoBehaviour
             Ledge = other.transform;
         }
     }
+    void OnTriggerExit(Collider other)
+    {
+        if (other.transform.tag == "ElevatorField")
+        {
+            controller.Move(moveDirection * Time.deltaTime *10);
+            isLevitating = false;
+        }
+    }
+    bool isLevitating = false;
+
+    void Levitate()
+    {
+        gravity = 0;
+        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime * speed;
+
+        //if (moveDirection.magnitude >= 0.5f)
+            transform.rotation = Quaternion.LookRotation(moveDirection);
+
+        //moveDirection *= speed;
+
+        moveDirection.y += Time.deltaTime * 20;
+
+        controller.Move(moveDirection);
+    }
 
     void OnTriggerStay(Collider other)
     {
-        if (other.transform.tag == "LevitationField")
+        if (other.transform.tag == "ElevatorField")
         {
-            controller.Move(transform.up * Time.deltaTime *3);
+            Debug.Log("Levitate!");
+            isLevitating = true;
         }
+
         if (other.transform.tag == "Interactable")
         {
+
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                //Debug.Log("Interacting");
-                if(other is IInteractable)
+                Debug.Log("Interacting");
+                MonoBehaviour hitBehaviour = other.GetComponent<MonoBehaviour>();
+                if (hitBehaviour is IInteractable)
                 {
-                    IInteractable iObject = (IInteractable)other;
+                    IInteractable iObject = (IInteractable)hitBehaviour;
                     iObject.Interact();
                 }
             }
