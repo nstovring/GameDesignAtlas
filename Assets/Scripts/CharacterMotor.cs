@@ -110,7 +110,6 @@ public class CharacterMotor : MonoBehaviour
         if (!isHanging)
         {
             moveDirection.y -= gravity*Time.deltaTime;
-            Debug.Log("Falling gravity");
             controller.Move(moveDirection*Time.deltaTime);
             myCharAnimator.SetVelocity(controller.velocity);
         }
@@ -133,5 +132,27 @@ public class CharacterMotor : MonoBehaviour
             Ledge = other.transform;
         }
     }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.transform.tag == "LevitationField")
+        {
+            controller.Move(transform.up * Time.deltaTime *3);
+        }
+        if (other.transform.tag == "Interactable")
+        {
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                //Debug.Log("Interacting");
+                if(other is IInteractable)
+                {
+                    IInteractable iObject = (IInteractable)other;
+                    iObject.Interact();
+                }
+            }
+        }
+    }
+
+
 
 }

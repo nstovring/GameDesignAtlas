@@ -12,7 +12,6 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject presentObjects;
 	public GameObject pastObjects;
-	public Transform child;
 
 
 	// Use this for initialization
