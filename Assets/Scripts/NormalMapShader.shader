@@ -9,8 +9,10 @@ Shader "NormalMapShader"
 	{
 		_Color ("Color Tint", Color) = (1.0, 1.0, 1.0, 1.0)
 		_MainTex ("Texture", 2D) = "white" {}
-		_Texture2("Texture", 2D) = "black" {}
+		_Texture2("Texture2", 2D) = "black" {}
+		_BlendTexture("Blending Texture", 2D) = "white" {}
 		_BumpMap ("Normal Map", 2D) = "bump" {}
+		_BumpMap2("Detereated Normal Map", 2D) = "bump" {}
 		_SpecColor("Specular Color", Color) = (1.0,1.0,1.0,1.0)
 		_Shininess("Shininess", Float) = 10.0
 		_RimColor("Rim Color", Color) = (1.0,1.0,1.0,1.0)
@@ -34,7 +36,9 @@ Shader "NormalMapShader"
 			uniform float4 _MainTex_ST;
 			uniform sampler2D _BumpMap;
 			uniform float4 _BumpMap_ST;
+			uniform sampler2D _BumpMap2;
 			uniform sampler2D _Texture2;
+			uniform sampler2D _BlendTexture;
 			uniform float4 _Color;
 			uniform float4 _SpecColor;
 			uniform float4 _RimColor;
@@ -102,8 +106,9 @@ Shader "NormalMapShader"
 				}
 
 				//Texture Maps 
-				float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw )*(1-_Blend) + tex2D(_Texture2, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*_Blend;
-				float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw );
+				float blendTextureAlpha = tex2D(_BlendTexture, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw).r;
+				float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw )*(1-(blendTextureAlpha*_Blend)) + tex2D(_Texture2, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*(blendTextureAlpha*_Blend);
+				float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw )*(1 - _Blend) + tex2D(_BumpMap2, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(_Blend);
 
 				//unpackNormal function
 				float3 localCoords = float3(2.0 * texN.ag - float2(1.0,1.0),0.0);
