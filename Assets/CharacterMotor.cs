@@ -45,6 +45,8 @@ public class CharacterMotor : MonoBehaviour
     }
     public bool isHanging = false;
 
+    Transform Ledge;
+    public Vector3 LedgeOffset;
     public void Movement()
     {
         //if (DistanceFromGround() < 0.4 && IsFalling())
@@ -53,57 +55,53 @@ public class CharacterMotor : MonoBehaviour
         //    Debug.Log("Landing");
         //}
         myCharAnimator.SetDistFromGround(DistanceFromGround());
-       
-        if (Input.GetKeyUp(KeyCode.Space) && isHanging)
+        if (isHanging)
         {
-            myCharAnimator.myAnimator.SetBool("Climbing", true);
+            controller.enabled = false;
+            myCharAnimator.myAnimator.applyRootMotion = true;
+            //controller.transform.position = Ledge.position - LedgeOffset;
+
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                myCharAnimator.myAnimator.SetBool("Climbing", true);
+            }
         }
+      
         if (DistanceFromGround()< 0.1f && !isHanging)
         {
+            controller.enabled = true;
             if (wasInAir)
             {
                 myCharAnimator.SetVSpeed(1);
-                Debug.Log("Landing");
-                
                 wasInAir = false;
-                //StartCoroutine(StopJumpingDelayed(0.01f));
             }
             myCharAnimator.Jump(false);
             moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
             if (moveDirection.magnitude >= 0.1)
                 transform.rotation = Quaternion.LookRotation(moveDirection);
-            // moveDirection = transform.TransformDirection(moveDirection);
             moveDirection *= speed;
             if (Input.GetButton("Jump"))
             {
                 myCharAnimator.Jump(true);
                 moveDirection.y = jumpSpeed;
                 myCharAnimator.SetVSpeed(0);
-                Debug.Log("Jumping");
                 wasInAir = true;
             }
         }
         else
         {
-            //myCharAnimator.Jump(true);
             if (IsFalling() && !isHanging)
             {
                 myCharAnimator.SetVSpeed(0.5f);
-                Debug.Log("Idle Air");
             }
-            //myCharAnimator.SetVSpeed();
         }
 
-        //myCharAnimator.SetJumpSpeed(controller.velocity.normalized.y);
         if (!isHanging)
         {
             moveDirection.y -= gravity*Time.deltaTime;
+            Debug.Log("Falling gravity");
             controller.Move(moveDirection*Time.deltaTime);
             myCharAnimator.SetVelocity(controller.velocity);
-        }
-        else
-        {
-           
         }
     }
 
@@ -121,8 +119,8 @@ public class CharacterMotor : MonoBehaviour
         {
             myCharAnimator.HangOnLedge(true);
             isHanging = true;
+            Ledge = other.transform;
         }
-        Destroy(other.gameObject);
     }
 
 }

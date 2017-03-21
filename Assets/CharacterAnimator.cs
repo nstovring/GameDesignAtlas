@@ -9,7 +9,7 @@ public class CharacterAnimator : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-	    //myAnimator.applyRootMotion = false;
+	    //myAnimator.applyRootMotion = true;
 	}
 
     private float HSpeed;
