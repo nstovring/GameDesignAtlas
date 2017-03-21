@@ -115,6 +115,7 @@ public class CharacterMotor : MonoBehaviour
         {
             gravity = Mathf.Lerp(gravity, 20, 0.1f);
             moveDirection.y -= gravity*Time.deltaTime;
+            moveDirection.z = 0;
             controller.Move(moveDirection*Time.deltaTime);
             myCharAnimator.SetVelocity(controller.velocity);
         }
@@ -149,6 +150,7 @@ public class CharacterMotor : MonoBehaviour
             transform.rotation = Quaternion.LookRotation(moveDirection);
 
         //moveDirection *= speed;
+        moveDirection.z = 0;
 
         moveDirection.y += Time.deltaTime * 20;
 
