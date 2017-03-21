@@ -12,10 +12,11 @@ public class LevelManager : MonoBehaviour {
 
 	public GameObject presentObjects;
 	public GameObject pastObjects;
+    public GameObject alltimeObjects;
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		lm = this;
 		//Set present objects visible only
 		foreach (Transform child in presentObjects.transform) {
@@ -46,6 +47,8 @@ public class LevelManager : MonoBehaviour {
 				Debug.Log ("Child: " + child.name + " becoming visible");
 				//Make visible
 				presentObjects.SetActive(true);
+                
+
 			}
 			foreach (Transform child in pastObjects.transform) {
 				Debug.Log ("Child: " + child.name + " becoming invisible");
@@ -53,10 +56,15 @@ public class LevelManager : MonoBehaviour {
 				pastObjects.SetActive(false);
 			}
 
-			//Change camera shader
+            foreach (Transform child in alltimeObjects.transform)
+            {
+                child.transform.GetComponent<Renderer>().material.SetFloat("_Blend", 0.8f);
+            }
 
-			//Notify TimeShader
-		} 
+            //Change camera shader
+
+            //Notify TimeShader
+        } 
 		//If changing to past
 		else {
 			Debug.Log ("Changing to past time");
@@ -73,9 +81,14 @@ public class LevelManager : MonoBehaviour {
 				pastObjects.SetActive(true);
 			}
 
-			//Change camera shader
 
-			//Notify TimeShader
-		}
+            foreach (Transform child in alltimeObjects.transform)
+            {
+                child.transform.GetComponent<Renderer>().material.SetFloat("_Blend", .0f);
+            }
+            //Change camera shader
+
+            //Notify TimeShader
+        }
 	}
 }
