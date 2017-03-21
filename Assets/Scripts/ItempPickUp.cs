@@ -19,8 +19,17 @@ public class ItempPickUp : MonoBehaviour {
         if (other.tag == "collectible")
         {
             Destroy(other.gameObject);
+            LevelManager.lm.keyscollected += 1;
+            Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected );
+
         }
-        LevelManager.lm.keyscollected += 1;
-        Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected );
+
+        if (other.tag == "LevelEnd")
+        {
+            if (LevelManager.lm.keyscollected == 1)
+            {
+                Debug.Log("congratulations, you won!");
+            }
+        }
     }
 }
