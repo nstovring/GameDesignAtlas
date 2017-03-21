@@ -8,9 +8,6 @@ public class TimeShifting : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		//Test to see if we can access the values of the Level Manager
-		Debug.Log(LevelManager.lm.test);
 		
 	}
 	
