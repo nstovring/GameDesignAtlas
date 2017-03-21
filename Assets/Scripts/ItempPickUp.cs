@@ -16,11 +16,19 @@ public class ItempPickUp : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "collectible")
+        if (other.tag == "Key")
         {
             Destroy(other.gameObject);
             LevelManager.lm.keyscollected += 1;
-            Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected );
+            Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected);
+
+        }
+
+        if (other.tag == "Sphere")
+        {
+            Destroy(other.gameObject);
+            LevelManager.lm.spherescollected += 1;
+            Debug.Log("sphere collected! nmb: " + LevelManager.lm.spherescollected);
 
         }
 
@@ -29,6 +37,14 @@ public class ItempPickUp : MonoBehaviour {
             if (LevelManager.lm.keyscollected == 1)
             {
                 Debug.Log("congratulations, you won!");
+            }
+        }
+
+        if (other.tag == "Interactable")
+        {
+            if (LevelManager.lm.spherescollected == 1)
+            {
+               Debug.Log("collected sphere!");
             }
         }
     }

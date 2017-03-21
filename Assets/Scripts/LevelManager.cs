@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour {
     public GameObject alltimeObjects;
 
     public int keyscollected = 0;
+    public int spherescollected = 0;
 
 
     // Use this for initialization
