@@ -38,18 +38,15 @@ public class GuardMotor : MonoBehaviour {
         if (alert)
         {
             Vector3 moveDirection = target.position - transform.position;
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-            movementMagnitude = Mathf.Lerp(movementMagnitude, moveDirection.magnitude, 0.1f);
+            transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(moveDirection),0.2f);
+
+            movementMagnitude = Mathf.Lerp(movementMagnitude, 1, 0.1f);
             myAnimator.SetFloat("HSpeed", movementMagnitude);
         }
         else
         {
             movementMagnitude = Mathf.Lerp(movementMagnitude, 0, 0.1f);
             myAnimator.SetFloat("HSpeed", movementMagnitude);
-
-            //Vector3 moveDirection = transform.position - target.position;
-            //transform.rotation = Quaternion.LookRotation(moveDirection);
-            //myAnimator.SetFloat("HSpeed", moveDirection.magnitude);
         }
 
         if (alert && Vector3.Distance(transform.position,target.position) > 10)
