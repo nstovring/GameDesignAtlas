@@ -13,15 +13,17 @@ public class Climbing : StateMachineBehaviour {
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.ApplyBuiltinRootMotion();
+        //animator.ApplyBuiltinRootMotion();
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Climbing = false;
+        CharacterMotor myMotor = animator.transform.GetComponent<CharacterMotor>();
         animator.SetBool("IsHanging", false);
-        animator.transform.GetComponent<CharacterMotor>().isHanging = false;
+        myMotor.isHanging = false;
+        myMotor.GetController().enabled = true;
         animator.SetBool("Climbing", false);
        // animator.applyRootMotion = false;
     }

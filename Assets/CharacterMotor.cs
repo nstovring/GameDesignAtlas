@@ -47,6 +47,13 @@ public class CharacterMotor : MonoBehaviour
 
     Transform Ledge;
     public Vector3 LedgeOffset;
+
+    public CharacterController GetController()
+    {
+        return controller;
+    }
+
+
     public void Movement()
     {
         //if (DistanceFromGround() < 0.4 && IsFalling())
@@ -54,6 +61,10 @@ public class CharacterMotor : MonoBehaviour
         //    myCharAnimator.SetVSpeed(1);
         //    Debug.Log("Landing");
         //}
+
+ 
+
+
         myCharAnimator.SetDistFromGround(DistanceFromGround());
         if (isHanging)
         {
