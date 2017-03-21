@@ -44,7 +44,7 @@ public class ItempPickUp : MonoBehaviour {
         {
             if (LevelManager.lm.spherescollected == 1)
             {
-               Debug.Log("collected sphere!");
+               Debug.Log("activate ");
             }
         }
     }
