@@ -21,8 +21,15 @@ public class TimeShifting : MonoBehaviour {
 	}
 
 	public void changeTime (bool time) {
-		LevelManager.lm.changeTime (time);
-	}
+        CameraBlinding blinding = LevelManager.lm.blindingShader;
+        if (blinding.isActiveAndEnabled)
+        {
+            blinding.time = time;
+            blinding.CallFlashScreen();
+        }
+        else
+            LevelManager.lm.changeTime(time);
+    }
 
 
 }
