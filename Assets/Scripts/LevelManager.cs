@@ -15,7 +15,6 @@ public class LevelManager : MonoBehaviour {
 	public GameObject pastObjects;
     public GameObject alltimeObjects;
     public CameraBlinding blindingShader;
-    public TimeShifting timeShifter;
     public int keyscollected = 0;
     public int spherescollected = 0;
 
