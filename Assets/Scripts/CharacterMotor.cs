@@ -120,6 +120,20 @@ public class CharacterMotor : MonoBehaviour
             myCharAnimator.SetVelocity(controller.velocity);
         }
     }
+    void Levitate()
+    {
+        gravity = 0;
+        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime * speed;
+
+        //if (moveDirection.magnitude >= 0.5f)
+        transform.rotation = Quaternion.LookRotation(moveDirection);
+
+        moveDirection.z = 0;
+
+        moveDirection.y += Time.deltaTime * 5;
+
+        controller.Move(moveDirection);
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -130,6 +144,16 @@ public class CharacterMotor : MonoBehaviour
             isHanging = true;
             Ledge = other.transform;
         }
+        if (other.transform.tag == "Interactable")
+        {
+            MonoBehaviour hitBehaviour = other.GetComponent<MonoBehaviour>();
+            if (hitBehaviour is IInteractable)
+            {
+                IInteractable iObject = (IInteractable)hitBehaviour;
+                iObject.Interact();
+            }
+        }
+
     }
     void OnTriggerExit(Collider other)
     {
@@ -141,21 +165,7 @@ public class CharacterMotor : MonoBehaviour
     }
     bool isLevitating = false;
 
-    void Levitate()
-    {
-        gravity = 0;
-        moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Time.deltaTime * speed;
-
-        //if (moveDirection.magnitude >= 0.5f)
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-
-        moveDirection.z = 0;
-
-        moveDirection.y += Time.deltaTime * 5;
-
-        controller.Move(moveDirection);
-    }
-
+  
     void OnTriggerStay(Collider other)
     {
         if (other.transform.tag == "ElevatorField")
@@ -164,7 +174,7 @@ public class CharacterMotor : MonoBehaviour
             isLevitating = true;
         }
 
-        if (other.transform.tag == "Interactable")
+        if (other.transform.tag == "PlayerInteractable")
         {
 
             if (Input.GetKeyUp(KeyCode.Q))
@@ -179,7 +189,6 @@ public class CharacterMotor : MonoBehaviour
             }
         }
     }
-
 
 
 }
