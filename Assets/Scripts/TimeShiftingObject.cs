@@ -54,6 +54,7 @@ public class TimeShiftingObject : MonoBehaviour {
                         }
                         myMaterial.SetFloat("_Blend", 1);
                         myMaterial.SetFloat("_TimeShift", 0);
+                        if(transform.GetComponent<Collider>() != null)
                         transform.GetComponent<Collider>().enabled = false;
                     }
                     else
@@ -66,7 +67,8 @@ public class TimeShiftingObject : MonoBehaviour {
                         }
                         myMaterial.SetFloat("_Blend", 0);
                         myMaterial.SetFloat("_TimeShift", 1);
-                        transform.GetComponent<Collider>().enabled = true;
+                        if (transform.GetComponent<Collider>()!= null)
+                            transform.GetComponent<Collider>().enabled = true;
                     }
 
                     break;
@@ -83,7 +85,8 @@ public class TimeShiftingObject : MonoBehaviour {
                         }
                         myMaterial.SetFloat("_Blend", 0);
                         myMaterial.SetFloat("_TimeShift", 0);
-                        transform.GetComponent<Collider>().enabled = false;
+                        if (transform.GetComponent<Collider>() != null)
+                            transform.GetComponent<Collider>().enabled = false;
                     }
                     else
                     {
@@ -95,6 +98,7 @@ public class TimeShiftingObject : MonoBehaviour {
                         }
                         myMaterial.SetFloat("_Blend", 1);
                         myMaterial.SetFloat("_TimeShift", 1);
+                        if(transform.GetComponent<Collider>() != null)
                         transform.GetComponent<Collider>().enabled = true;
                     }
                     break;
