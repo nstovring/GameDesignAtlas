@@ -25,7 +25,7 @@ public class TimeShifting : MonoBehaviour {
         if (blinding.isActiveAndEnabled)
         {
             blinding.time = time;
-            blinding.StartCoroutine("FlashScreen");
+            blinding.CallFlashScreen();
         }
         else
             LevelManager.lm.changeTime(time);

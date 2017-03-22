@@ -9,6 +9,7 @@ public class CameraBlinding : MonoBehaviour {
     public float BlendWeight = 0;
     float delay;
     public bool time;
+    bool isBlinding;
     // Use this for initialization
     void OnEnable()
     {
@@ -34,8 +35,13 @@ public class CameraBlinding : MonoBehaviour {
         }
         else Graphics.Blit(source, destination);
     }
+    public void CallFlashScreen()
+    {
+        if (!isBlinding) StartCoroutine("FlashScreen");
+    }
     IEnumerator FlashScreen()
     {
+        isBlinding = true;
         while(BlendWeight < 0.95f)
         {
             BlendWeight = Mathf.Lerp(BlendWeight, 1, 0.2f);
@@ -49,6 +55,6 @@ public class CameraBlinding : MonoBehaviour {
             yield return new WaitForSeconds(delay);
         }
         BlendWeight = 0;
-        
+        isBlinding = false;
     }
 }
