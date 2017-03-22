@@ -149,10 +149,9 @@ public class CharacterMotor : MonoBehaviour
         //if (moveDirection.magnitude >= 0.5f)
             transform.rotation = Quaternion.LookRotation(moveDirection);
 
-        //moveDirection *= speed;
         moveDirection.z = 0;
 
-        moveDirection.y += Time.deltaTime * 20;
+        moveDirection.y += Time.deltaTime * 5;
 
         controller.Move(moveDirection);
     }

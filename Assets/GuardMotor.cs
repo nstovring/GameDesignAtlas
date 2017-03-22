@@ -23,7 +23,7 @@ public class GuardMotor : MonoBehaviour {
         Ray ray = new Ray(transform.position + transform.up, transform.forward);
         Debug.DrawRay(transform.position + transform.up, transform.forward * 5, Color.red);
 
-        Collider[] collider = Physics.OverlapSphere(transform.position + transform.forward * 5, 5f);
+        Collider[] collider = Physics.OverlapSphere(transform.position, 10f);
 
         foreach (var item in collider)
         {
@@ -54,4 +54,10 @@ public class GuardMotor : MonoBehaviour {
             alert = false;
         }
 	}
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 7);
+    }
 }

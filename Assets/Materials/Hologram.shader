@@ -8,6 +8,7 @@
 		_DotProduct("Rim effect", Range(-1,1)) = 0.25
 		_HeightSlider("Height falloff", Range(0,2)) = 1
 		_HeightOffset("Height Offset", Range(-2,2)) = 0
+		_Alpha("Alpha", Range(0,1)) = 1
 	}
 	SubShader {
 		Tags { "Queue" = "Transparent" "RenderType"="Transparent" "IgnoreProjector" = "true" }
@@ -34,13 +35,14 @@
 		float _HeightSlider;
 		float _HeightOffset;
 		float4 _AmbientColor;
+		float _Alpha;
 		half _MySliderValue;
 		fixed4 _Color;
 		sampler2D _MainTex;
 
 		void surf (Input IN, inout SurfaceOutput o) {
 			// Albedo comes from a texture tinted by color
-			_HeightSlider = _SinTime * 5 * _Time;
+			//_HeightSlider = _SinTime * 5 * _Time;
 
 			float heightScale = (IN.worldPos.y -_HeightOffset) / _HeightSlider;
 			
@@ -48,7 +50,8 @@
 			o.Albedo = c.rgb;
 
 			float border = max((abs(dot(IN.viewDir,IN.worldNormal))),_RimModifier)/ (heightScale);
-			float alpha = (border * (1 - _DotProduct) + _DotProduct) ;
+			//float alpha = (border * (1 - _DotProduct) + _DotProduct) ;
+			float alpha = _Alpha;
 			// Metallic and smoothness come from slider variables
 			o.Alpha = c.a * alpha;
 		}

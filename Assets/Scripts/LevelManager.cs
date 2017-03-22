@@ -62,7 +62,15 @@ public class LevelManager : MonoBehaviour {
 
             foreach (Transform child in alltimeObjects.transform)
             {
-                child.transform.GetComponent<Renderer>().material.SetFloat("_Blend", 0.8f);
+                Renderer childRenderer = child.transform.GetComponent<Renderer>();
+                if (childRenderer != null)
+                {
+                    childRenderer.material.SetFloat("_Blend", 0.8f);
+                }
+                else
+                {
+                    child.transform.GetComponentInChildren<Renderer>().material.SetFloat("_Blend", 0.8f);
+                }
             }
 
             //Change camera shader
@@ -88,8 +96,16 @@ public class LevelManager : MonoBehaviour {
 
             foreach (Transform child in alltimeObjects.transform)
             {
-                child.transform.GetComponent<Renderer>().material.SetFloat("_Blend", .0f);
+                Renderer childRenderer = child.transform.GetComponent<Renderer>();
+                if (childRenderer != null)
+                {
+                    childRenderer.material.SetFloat("_Blend", .0f);
+                }else
+                {
+                child.transform.GetComponentInChildren<Renderer>().material.SetFloat("_Blend", .0f);
             }
+
+        }
             //Change camera shader
 
             //Notify TimeShader
