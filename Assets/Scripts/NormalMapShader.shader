@@ -74,15 +74,24 @@ Shader "NormalMapShader"
 
 			vertexOutput vert(vertexInput v) {
 				vertexOutput o;
+				if (_TimeShift > 0.0f) {
+					o.normalWorld = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
+					o.tangentWorld = normalize(mul(unity_ObjectToWorld, v.tangent).xyz);
+					o.binormalWorld = normalize(cross(o.normalWorld, o.tangentWorld) * v.tangent.w);
 
-				o.normalWorld = normalize(mul(float4(v.normal,0.0),unity_WorldToObject).xyz);
-				o.tangentWorld = normalize(mul(unity_ObjectToWorld,v.tangent).xyz);
-				o.binormalWorld = normalize(cross(o.normalWorld,o.tangentWorld) * v.tangent.w);
+					o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+					o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+					o.tex = v.texcoord;
+				}
+				else {
+					o.normalWorld = float4(1, 1, 1, 1);
+					o.tangentWorld = float4(1, 1, 1, 1);
+					o.binormalWorld = float4(1, 1, 1, 1);
 
-				o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-				o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-				o.tex = v.texcoord;
-
+					o.posWorld = float4(1, 1, 1, 1);
+					o.pos = float4(1, 1, 1, 1);
+					o.tex = v.texcoord;
+				}
 				return o;
 
 			}
@@ -90,59 +99,60 @@ Shader "NormalMapShader"
 			//fragment function
 			float4 frag(vertexOutput i) : COLOR
 			{
+				if (_TimeShift > 0.0f) {
+					float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld);
+					float3 lightDirection;
+					float atten;
 
-				float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld);
-				float3 lightDirection;
-				float atten;
+					if (_WorldSpaceLightPos0.w == 0.0) { //directional light 
+						atten = 1.0;
+						lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 
-				if (_WorldSpaceLightPos0.w == 0.0) { //directional light 
-					atten = 1.0;
-					lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+					}
+					else {
+						float3 fragmentToLightSource = _WorldSpaceLightPos0.xyz - i.posWorld.xyz;
+						float distance = length(fragmentToLightSource);
+						atten = 1.0 / distance;
+						lightDirection = normalize(fragmentToLightSource);
+					}
 
+					//Texture Maps 
+					float blendTextureAlpha = tex2D(_BlendTexture, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw).r;
+					float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*(1 - (blendTextureAlpha*_Blend)) + tex2D(_Texture2, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*(blendTextureAlpha*_Blend);
+					float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(1 - _Blend) + tex2D(_BumpMap2, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(_Blend);
+
+					//unpackNormal function
+					float3 localCoords = float3(2.0 * texN.ag - float2(1.0,1.0),0.0);
+					localCoords.z = 1.0 - 0.5 * dot(localCoords,localCoords);
+
+					//normal transpose matrix 
+					float3x3 local2WorldTranspose = float3x3(
+						i.tangentWorld,
+						i.binormalWorld,
+						i.normalWorld
+						);
+
+					//calculate normal direction
+
+					float3 normalDirection = normalize(mul(localCoords, local2WorldTranspose));
+
+
+
+					//lighting
+					float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection,lightDirection));
+					float3 specularReflection = diffuseReflection * _SpecColor.xyz * pow(saturate(dot(reflect(-lightDirection, normalDirection), viewDirection)) , _Shininess);
+
+					//rim lighting
+					float rim = 1 - saturate(dot(viewDirection,normalDirection));
+					float3 rimLighting = saturate(dot(normalDirection,lightDirection) * _RimColor.xyz * _LightColor0.xyz * pow(rim,_RimPower));
+
+					float3 lightFinal = UNITY_LIGHTMODEL_AMBIENT.xyz + diffuseReflection + specularReflection + rimLighting;
+
+
+
+					return float4(tex.xyz * lightFinal * _Color.xyz, _TimeShift);
 				}
-				else {
-					float3 fragmentToLightSource = _WorldSpaceLightPos0.xyz - i.posWorld.xyz;
-					float distance = length(fragmentToLightSource);
-					atten = 1.0 / distance;
-					lightDirection = normalize(fragmentToLightSource);
-				}
-
-				//Texture Maps 
-				float blendTextureAlpha = tex2D(_BlendTexture, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw).r;
-				float4 tex = tex2D(_MainTex, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*(1 - (blendTextureAlpha*_Blend)) + tex2D(_Texture2, i.tex.xy * _MainTex_ST.xy + _MainTex_ST.zw)*(blendTextureAlpha*_Blend);
-				float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(1 - _Blend) + tex2D(_BumpMap2, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(_Blend);
-
-				//unpackNormal function
-				float3 localCoords = float3(2.0 * texN.ag - float2(1.0,1.0),0.0);
-				localCoords.z = 1.0 - 0.5 * dot(localCoords,localCoords);
-
-				//normal transpose matrix 
-				float3x3 local2WorldTranspose = float3x3(
-					i.tangentWorld,
-					i.binormalWorld,
-					i.normalWorld
-					);
-
-				//calculate normal direction
-
-				float3 normalDirection = normalize(mul(localCoords, local2WorldTranspose));
-
-
-
-				//lighting
-				float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection,lightDirection));
-				float3 specularReflection = diffuseReflection * _SpecColor.xyz * pow(saturate(dot(reflect(-lightDirection, normalDirection), viewDirection)) , _Shininess);
-
-				//rim lighting
-				float rim = 1 - saturate(dot(viewDirection,normalDirection));
-				float3 rimLighting = saturate(dot(normalDirection,lightDirection) * _RimColor.xyz * _LightColor0.xyz * pow(rim,_RimPower));
-
-				float3 lightFinal = UNITY_LIGHTMODEL_AMBIENT.xyz + diffuseReflection + specularReflection + rimLighting;
-
-
-
-				return float4(tex.xyz * lightFinal * _Color.xyz, _TimeShift);
-
+				else return float4(0, 0, 0, _TimeShift);
 
 			}
 
@@ -199,13 +209,24 @@ Shader "NormalMapShader"
 				vertexOutput vert(vertexInput v) {
 					vertexOutput o;
 
-					o.normalWorld = normalize(mul(float4(v.normal,0.0),unity_WorldToObject).xyz);
-					o.tangentWorld = normalize(mul(unity_ObjectToWorld,v.tangent).xyz);
-					o.binormalWorld = normalize(cross(o.normalWorld,o.tangentWorld) * v.tangent.w);
+					if (_TimeShift > 0.0f) {
+						o.normalWorld = normalize(mul(float4(v.normal, 0.0), unity_WorldToObject).xyz);
+						o.tangentWorld = normalize(mul(unity_ObjectToWorld, v.tangent).xyz);
+						o.binormalWorld = normalize(cross(o.normalWorld, o.tangentWorld) * v.tangent.w);
 
-					o.posWorld = mul(unity_ObjectToWorld, v.vertex);
-					o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
-					o.tex = v.texcoord;
+						o.posWorld = mul(unity_ObjectToWorld, v.vertex);
+						o.pos = mul(UNITY_MATRIX_MVP, v.vertex);
+						o.tex = v.texcoord;
+					}
+					else {
+						o.normalWorld = float4(1, 1, 1, 1);
+						o.tangentWorld = float4(1, 1, 1, 1);
+						o.binormalWorld = float4(1, 1, 1, 1);
+
+						o.posWorld = float4(1, 1, 1, 1);
+						o.pos = float4(1, 1, 1, 1);
+						o.tex = v.texcoord;
+					}
 
 					return o;
 
@@ -214,56 +235,57 @@ Shader "NormalMapShader"
 				//fragment function
 				float4 frag(vertexOutput i) : COLOR
 				{
+					if (_TimeShift > 0.0f) {
+						float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld);
+						float3 lightDirection;
+						float atten;
 
-					float3 viewDirection = normalize(_WorldSpaceCameraPos.xyz - i.posWorld);
-					float3 lightDirection;
-					float atten;
+						if (_WorldSpaceLightPos0.w == 0.0) { //directional light 
+							atten = 1.0;
+							lightDirection = normalize(_WorldSpaceLightPos0.xyz);
 
-					if (_WorldSpaceLightPos0.w == 0.0) { //directional light 
-						atten = 1.0;
-						lightDirection = normalize(_WorldSpaceLightPos0.xyz);
+						}
+						else {
+							float3 fragmentToLightSource = _WorldSpaceLightPos0.xyz - i.posWorld.xyz;
+							float distance = length(fragmentToLightSource);
+							atten = 1.0 / distance;
+							lightDirection = normalize(fragmentToLightSource);
+						}
 
+						//Texture Maps 
+						float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(1 - _Blend) + tex2D(_BumpMap2, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(_Blend);
+
+						//unpackNormal function
+						float3 localCoords = float3(2.0 * texN.ag - float2(1.0,1.0),0.0);
+						localCoords.z = 1.0 - 0.5 * dot(localCoords,localCoords);
+
+						//normal transpose matrix 
+						float3x3 local2WorldTranspose = float3x3(
+							i.tangentWorld,
+							i.binormalWorld,
+							i.normalWorld
+							);
+
+						//calculate normal direction
+						float3 normalDirection = normalize(mul(localCoords, local2WorldTranspose));
+
+
+
+						//lighting
+						float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection,lightDirection));
+						float3 specularReflection = diffuseReflection * _SpecColor.xyz * pow(saturate(dot(reflect(-lightDirection, normalDirection), viewDirection)) , _Shininess);
+
+						//rim lighting
+						float rim = 1 - saturate(dot(viewDirection,normalDirection));
+						float3 rimLighting = saturate(dot(normalDirection,lightDirection) * _RimColor.xyz * _LightColor0.xyz * pow(rim,_RimPower));
+
+						float3 lightFinal = diffuseReflection + specularReflection + rimLighting;
+
+
+
+						return float4(lightFinal * _Color.xyz, 1.0)*_TimeShift;
 					}
-					else {
-						float3 fragmentToLightSource = _WorldSpaceLightPos0.xyz - i.posWorld.xyz;
-						float distance = length(fragmentToLightSource);
-						atten = 1.0 / distance;
-						lightDirection = normalize(fragmentToLightSource);
-					}
-
-					//Texture Maps 
-					float4 texN = tex2D(_BumpMap, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(1 - _Blend) + tex2D(_BumpMap2, i.tex.xy * _BumpMap_ST.xy + _MainTex_ST.zw)*(_Blend);
-
-					//unpackNormal function
-					float3 localCoords = float3(2.0 * texN.ag - float2(1.0,1.0),0.0);
-					localCoords.z = 1.0 - 0.5 * dot(localCoords,localCoords);
-
-					//normal transpose matrix 
-					float3x3 local2WorldTranspose = float3x3(
-						i.tangentWorld,
-						i.binormalWorld,
-						i.normalWorld
-						);
-
-					//calculate normal direction
-					float3 normalDirection = normalize(mul(localCoords, local2WorldTranspose));
-
-
-
-					//lighting
-					float3 diffuseReflection = atten * _LightColor0.xyz * saturate(dot(normalDirection,lightDirection));
-					float3 specularReflection = diffuseReflection * _SpecColor.xyz * pow(saturate(dot(reflect(-lightDirection, normalDirection), viewDirection)) , _Shininess);
-
-					//rim lighting
-					float rim = 1 - saturate(dot(viewDirection,normalDirection));
-					float3 rimLighting = saturate(dot(normalDirection,lightDirection) * _RimColor.xyz * _LightColor0.xyz * pow(rim,_RimPower));
-
-					float3 lightFinal = diffuseReflection + specularReflection + rimLighting;
-
-
-
-					return float4(lightFinal * _Color.xyz, _TimeShift)*_TimeShift;
-
+					else return float4(0,0,0,_TimeShift);
 
 				}
 
