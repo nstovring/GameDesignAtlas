@@ -32,7 +32,19 @@ public class characterAudiocontroller : MonoBehaviour
         //running high amplitude
 
     }
+    public void PlayFootStep(float amplitude)
+    {
+        //walking low amplitude
+        //if (amplitude < 1)
+        //{
+            audio.clip = audioClips[0];
+            audio.volume = amplitude * Random.Range(0.7f,1.4f);
+        //audio.pitch = Random.Range(0.5f, 1.5f) -amplitude/2;
+            audio.Play();
+        //}
+        //running high amplitude
 
+    }
     public void PlayFootStepLeft(float amplitude)
     {
 

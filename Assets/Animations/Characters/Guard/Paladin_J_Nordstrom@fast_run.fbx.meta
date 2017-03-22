@@ -211,7 +211,23 @@ ModelImporter:
           preInfinity: 3
           postInfinity: 3
           rotationOrder: 0
-      events: []
+      events:
+      - time: 0.35142857
+        functionName: PlayFootStep
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 4a1e508409386db4f9794cb0da0a6035,
+          type: 3}
+        floatParameter: 2
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.84
+        functionName: PlayFootStep
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 4a1e508409386db4f9794cb0da0a6035,
+          type: 3}
+        floatParameter: 2
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

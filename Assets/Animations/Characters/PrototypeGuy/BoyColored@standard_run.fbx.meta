@@ -107,16 +107,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.08209741
-        functionName: PlayFootStepRight
+      - time: 0.8228347
+        functionName: PlayFootStep
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4a1e508409386db4f9794cb0da0a6035,
           type: 3}
         floatParameter: 0.6
         intParameter: 0
         messageOptions: 0
-      - time: 0.8228347
-        functionName: PlayFootStepLeft
+      - time: 0.39142856
+        functionName: PlayFootStep
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4a1e508409386db4f9794cb0da0a6035,
           type: 3}
