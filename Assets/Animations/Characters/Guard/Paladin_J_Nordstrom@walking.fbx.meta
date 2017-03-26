@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: b74f6df3036f72c40828ce25035a44b3
-timeCreated: 1490107385
+timeCreated: 1490271073
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -156,7 +156,7 @@ ModelImporter:
       has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5

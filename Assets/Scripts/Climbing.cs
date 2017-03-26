@@ -20,18 +20,21 @@ public class Climbing : StateMachineBehaviour {
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         // Climbing = false;
-        CharacterMotor myMotor = animator.transform.GetComponent<CharacterMotor>();
+        CharacterMotorNew myMotor = animator.transform.GetComponent<CharacterMotorNew>();
+        myMotor.controller.enabled = true;
+        animator.applyRootMotion = false;
         animator.SetBool("IsHanging", false);
-        myMotor.isHanging = false;
-        myMotor.GetController().enabled = true;
         animator.SetBool("Climbing", false);
+        myMotor.canControl = true;
+        //myMotor.FinishedClimbing();
        // animator.applyRootMotion = false;
     }
 
-    // OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
-    //
-    //}
+    //OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
+    override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        animator.transform.position = animator.rootPosition;
+    }
 
     // OnStateIK is called right after Animator.OnAnimatorIK(). Code that sets up animation IK (inverse kinematics) should be implemented here.
     //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {

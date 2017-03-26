@@ -10,10 +10,26 @@ public class TimeShiftingObject : MonoBehaviour {
     public TimePeriod TimeState = TimePeriod.Always;
     bool isShifting = false;
     int currentTime;
-    Material myMaterial;
+    List<Material> myMaterials;
+    public List<Renderer> myRenderer;
+
+    public bool disableObject = false;
 	// Use this for initialization
 	IEnumerator Start () {
-        myMaterial = GetComponent<Renderer>().material;
+        myMaterials = new List<Material>();
+        if (myRenderer.Count == 0)
+        {
+            myMaterials.Add(GetComponent<Renderer>().material);
+        }else
+        {
+            foreach (var item in myRenderer)
+            {
+                myMaterials.Add(item.GetComponent<Renderer>().material);
+            }
+        }
+
+
+
 		if(LevelManager.lm != null)
         {
             LevelManager.lm.TimeShift += new LevelManager.TimeShiftHandler(CallTimeShift);
@@ -44,84 +60,102 @@ public class TimeShiftingObject : MonoBehaviour {
             {
                 case TimePeriod.Past:
                     {
-                    if (time)
+                    foreach (var myMaterial in myMaterials)
                     {
-                        while (myMaterial.GetFloat("_Blend") < 0.95)
+                        if (time)
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                            myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
-                            yield return new WaitForSeconds(delay);
+                        
+                            while (myMaterial.GetFloat("_Blend") < 0.95)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 1);
+                            myMaterial.SetFloat("_TimeShift", 0);
+                            if(transform.GetComponent<Collider>() != null)
+                            transform.GetComponent<Collider>().enabled = false;
+                            if (disableObject)
+                                transform.GetComponent<Animator>().enabled = false;
                         }
-                        myMaterial.SetFloat("_Blend", 1);
-                        myMaterial.SetFloat("_TimeShift", 0);
-                        if(transform.GetComponent<Collider>() != null)
-                        transform.GetComponent<Collider>().enabled = false;
-                    }
-                    else
-                    {
-                        while (myMaterial.GetFloat("_Blend") > 0.05)
+                        else
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                            myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
-                            yield return new WaitForSeconds(delay);
+                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 0);
+                            myMaterial.SetFloat("_TimeShift", 1);
+                            if (transform.GetComponent<Collider>()!= null)
+                                transform.GetComponent<Collider>().enabled = true;
+                            if (disableObject)
+                                transform.GetComponent<Animator>().enabled = true;
                         }
-                        myMaterial.SetFloat("_Blend", 0);
-                        myMaterial.SetFloat("_TimeShift", 1);
-                        if (transform.GetComponent<Collider>()!= null)
-                            transform.GetComponent<Collider>().enabled = true;
                     }
-
                     break;
                     }
                 case TimePeriod.Future:
                     {
-                    if (!time)
+                    foreach (var myMaterial in myMaterials)
                     {
-                        while (myMaterial.GetFloat("_Blend") > 0.05)
+                        if (!time)
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                            myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
-                            yield return new WaitForSeconds(delay);
+
+                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 0);
+                            myMaterial.SetFloat("_TimeShift", 0);
+                            if (transform.GetComponent<Collider>() != null)
+                                transform.GetComponent<Collider>().enabled = false;
+                            if (disableObject)
+                                transform.GetComponent<Animator>().enabled = false;
                         }
-                        myMaterial.SetFloat("_Blend", 0);
-                        myMaterial.SetFloat("_TimeShift", 0);
-                        if (transform.GetComponent<Collider>() != null)
-                            transform.GetComponent<Collider>().enabled = false;
-                    }
-                    else
-                    {
-                        while (myMaterial.GetFloat("_Blend") < 0.95)
+                        else
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                            myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
-                            yield return new WaitForSeconds(delay);
+                            while (myMaterial.GetFloat("_Blend") < 0.95)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 1);
+                            myMaterial.SetFloat("_TimeShift", 1);
+                            if (transform.GetComponent<Collider>() != null)
+                                transform.GetComponent<Collider>().enabled = true;
+                            if (disableObject)
+                                transform.GetComponent<Animator>().enabled = true;
                         }
-                        myMaterial.SetFloat("_Blend", 1);
-                        myMaterial.SetFloat("_TimeShift", 1);
-                        if(transform.GetComponent<Collider>() != null)
-                        transform.GetComponent<Collider>().enabled = true;
                     }
                     break;
                     }
                 case TimePeriod.Always:
                     {
-                    if (time)
+                    foreach (var myMaterial in myMaterials)
                     {
-                        while (myMaterial.GetFloat("_Blend") < 0.95)
+                        if (time)
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                            yield return new WaitForSeconds(delay);
+                            while (myMaterial.GetFloat("_Blend") < 0.95)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 1);
                         }
-                        myMaterial.SetFloat("_Blend", 1);
-                    }
-                    else
-                    {
-                        while (myMaterial.GetFloat("_Blend") > 0.05)
+                        else
                         {
-                            myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                            yield return new WaitForSeconds(delay);
+                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            {
+                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                yield return new WaitForSeconds(delay);
+                            }
+                            myMaterial.SetFloat("_Blend", 0);
                         }
-                        myMaterial.SetFloat("_Blend", 0);
                     }
                     break;
                     }

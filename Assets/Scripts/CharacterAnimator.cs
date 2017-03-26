@@ -15,8 +15,8 @@ public class CharacterAnimator : MonoBehaviour
     private float HSpeed;
     public void SetVelocity(Vector3 CharVelocity)
     {
-        HSpeed = Mathf.Lerp(HSpeed,CharVelocity.normalized.x * Mathf.Sign(CharVelocity.x),0.1f);
-        myAnimator.SetFloat("HSpeed", HSpeed);
+        //HSpeed = Mathf.Lerp(HSpeed,CharVelocity.normalized.x * Mathf.Sign(CharVelocity.x),0.1f);
+        myAnimator.SetFloat("HSpeed", CharVelocity.sqrMagnitude);
     }
 
     private float VSpeed;
@@ -39,6 +39,12 @@ public class CharacterAnimator : MonoBehaviour
     public void HangOnLedge(bool hanging)
     {
         myAnimator.SetBool("IsHanging", hanging);
+    }
+
+    public void Climb(bool climbing)
+    {
+        HangOnLedge(false);
+        myAnimator.SetBool("Climbing", climbing);
     }
     // Update is called once per frame
     void Update () {

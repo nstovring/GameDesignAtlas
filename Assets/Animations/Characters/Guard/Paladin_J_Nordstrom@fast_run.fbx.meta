@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 3d9c24312cbaad346b41ce7c3c8b035d
-timeCreated: 1490107384
+timeCreated: 1490271073
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -154,9 +154,19 @@ ModelImporter:
       might lower retargeting quality:\nNote: Activate translation DOF on avatar to
       improve retargeting quality.\n\t'Spine2' is inbetween humanoid transforms and
       has rotation animation that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
-    animationCompression: 1
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tLeftUpperArm
+      average position error 10.6 mm and maximum position error 17.7 mm at time 0:10
+      (62.5%) Frame 10\n\tLeftLowerArm average position error 7.4 mm and maximum position
+      error 16.5 mm at time 0: 9 (56.3%) Frame 9\n\tLeftHand average position error
+      6.7 mm and maximum position error 16.8 mm at time 0:10 (62.5%) Frame 10\n\tRightUpperArm
+      average position error 10.5 mm and maximum position error 15.6 mm at time 0:
+      2 (12.5%) Frame 2\n\tRightLowerArm average position error 6.6 mm and maximum
+      position error 15.3 mm at time 0: 2 (12.5%) Frame 2\n\tRightHand average position
+      error 5.9 mm and maximum position error 15.5 mm at time 0: 2 (12.5%) Frame 2\n\tHead
+      average position error 12.1 mm and maximum position error 14.9 mm at time 0:10
+      (62.5%) Frame 10\n"
+    animationDoRetargetingWarnings: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -177,11 +187,11 @@ ModelImporter:
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 1
+      keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000

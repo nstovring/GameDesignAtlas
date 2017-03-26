@@ -18,8 +18,8 @@ Shader "NormalMapShader"
 		_RimColor("Rim Color", Color) = (1.0,1.0,1.0,1.0)
 		_RimPower("Rim Power", Range(0.1,10.0)) = 3.0
 		_Deteriotated("In past", Int) = 0
-		_Blend("Blend weight", Range(0,1)) = 0.5
-		_TimeShift("Time shift weight", Range(0,1)) = 0.5
+		_Blend("Blend weight", Range(0,1)) = 1
+		_TimeShift("Time shift weight", Range(0,1)) = 1
 	}
 
 		SubShader

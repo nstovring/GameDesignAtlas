@@ -35,12 +35,12 @@ public class GuardMotor : MonoBehaviour {
             }
         }
 
-        if (alert)
+        if (alert && myAnimator.enabled == true)
         {
             Vector3 moveDirection = target.position - transform.position;
-            transform.rotation = Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(moveDirection),0.2f);
+            transform.rotation = Quaternion.Euler(0,Quaternion.Lerp(transform.rotation,Quaternion.LookRotation(moveDirection),0.2f).eulerAngles.y,0);
 
-            movementMagnitude = Mathf.Lerp(movementMagnitude, 1, 0.1f);
+            movementMagnitude = Mathf.Lerp(movementMagnitude, 1, 0.01f);
             myAnimator.SetFloat("HSpeed", movementMagnitude);
         }
         else
@@ -54,6 +54,11 @@ public class GuardMotor : MonoBehaviour {
             alert = false;
         }
 	}
+
+    void ApplyGravity()
+    {
+
+    }
 
     private void OnDrawGizmos()
     {
