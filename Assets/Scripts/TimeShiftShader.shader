@@ -23,7 +23,7 @@
 
 		Pass{
 		ZWrite On
-		ColorMask 0
+		ColorMask 0	
 		}
 
 		CGPROGRAM

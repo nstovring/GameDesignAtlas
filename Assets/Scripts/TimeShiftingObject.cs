@@ -14,6 +14,7 @@ public class TimeShiftingObject : MonoBehaviour {
     public List<Renderer> myRenderer;
 
     public bool disableObject = false;
+    public bool invisibleObject = false;
 	// Use this for initialization
 	IEnumerator Start () {
         myMaterials = new List<Material>();
@@ -64,7 +65,14 @@ public class TimeShiftingObject : MonoBehaviour {
                     {
                         if (time)
                         {
-                        
+                            if (disableObject)
+                            {
+                                SetObjectState(false);
+                                if (invisibleObject)
+                                {
+                                    yield break;
+                                }
+                            }
                             while (myMaterial.GetFloat("_Blend") < 0.95)
                             {
                                 myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
@@ -75,11 +83,16 @@ public class TimeShiftingObject : MonoBehaviour {
                             myMaterial.SetFloat("_TimeShift", 0);
                             if(transform.GetComponent<Collider>() != null)
                             transform.GetComponent<Collider>().enabled = false;
-                            if (disableObject)
-                                transform.GetComponent<Animator>().enabled = false;
+                            
                         }
                         else
                         {
+                            if (disableObject)
+                                SetObjectState(true);
+                            if (invisibleObject)
+                            {
+                                yield break;
+                            }
                             while (myMaterial.GetFloat("_Blend") > 0.05)
                             {
                                 myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
@@ -90,8 +103,7 @@ public class TimeShiftingObject : MonoBehaviour {
                             myMaterial.SetFloat("_TimeShift", 1);
                             if (transform.GetComponent<Collider>()!= null)
                                 transform.GetComponent<Collider>().enabled = true;
-                            if (disableObject)
-                                transform.GetComponent<Animator>().enabled = true;
+                          
                         }
                     }
                     break;
@@ -102,7 +114,12 @@ public class TimeShiftingObject : MonoBehaviour {
                     {
                         if (!time)
                         {
-
+                            if (disableObject)
+                                SetObjectState(false);
+                            if (invisibleObject)
+                            {
+                                yield break;
+                            }
                             while (myMaterial.GetFloat("_Blend") > 0.05)
                             {
                                 myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
@@ -113,11 +130,16 @@ public class TimeShiftingObject : MonoBehaviour {
                             myMaterial.SetFloat("_TimeShift", 0);
                             if (transform.GetComponent<Collider>() != null)
                                 transform.GetComponent<Collider>().enabled = false;
-                            if (disableObject)
-                                transform.GetComponent<Animator>().enabled = false;
+                           
                         }
                         else
                         {
+                            if (disableObject)
+                                SetObjectState(true);
+                            if (invisibleObject)
+                            {
+                                yield break;
+                            } 
                             while (myMaterial.GetFloat("_Blend") < 0.95)
                             {
                                 myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
@@ -128,8 +150,7 @@ public class TimeShiftingObject : MonoBehaviour {
                             myMaterial.SetFloat("_TimeShift", 1);
                             if (transform.GetComponent<Collider>() != null)
                                 transform.GetComponent<Collider>().enabled = true;
-                            if (disableObject)
-                                transform.GetComponent<Animator>().enabled = true;
+                            
                         }
                     }
                     break;
@@ -167,5 +188,20 @@ public class TimeShiftingObject : MonoBehaviour {
         }
         yield return new WaitForSeconds(delay);
         isShifting = false;
+    }
+
+
+    void SetObjectState(bool boolean)
+    {
+        if (transform.GetComponent<Animator>() != null)
+        {
+            transform.GetComponent<Animator>().enabled = boolean;
+        }
+
+        if (transform.GetComponent<Renderer>() != null)
+            transform.GetComponent<Renderer>().enabled = boolean;
+
+        if (transform.childCount > 0)
+            transform.GetChild(0).gameObject.SetActive(boolean);
     }
 }

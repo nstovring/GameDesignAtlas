@@ -5,10 +5,11 @@ using UnityEngine;
 
 public class MagicElevator : MonoBehaviour, ILinkable {
 
-    public Collider LevitationField;
+    public Transform LevitationField;
     public void Activate()
     {
-        LevitationField.transform.gameObject.SetActive(true);
+        Debug.Log("Activate Field");
+        LevitationField.gameObject.SetActive(true);
     }
 
     // Use this for initialization

@@ -712,10 +712,11 @@ public class CharacterMotorNew : MonoBehaviour
 
             if (Input.GetKeyUp(KeyCode.Q))
             {
-                Debug.Log("Interacting");
                 MonoBehaviour hitBehaviour = other.GetComponent<MonoBehaviour>();
                 if (hitBehaviour is IInteractable)
                 {
+                    Debug.Log("Interacting");
+
                     IInteractable iObject = (IInteractable)hitBehaviour;
                     iObject.Interact();
                 }
