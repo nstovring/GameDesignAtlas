@@ -7,6 +7,7 @@ public class CameraMover : MonoBehaviour {
     public Transform playerCharacter;
 
     public Vector3 offset = new Vector3(0,4.14f,-10);
+    public Vector3 rotationOffset = Vector3.zero;
 	// Use this for initialization
 	void Start () {
         //offset = transform.position;
@@ -32,6 +33,7 @@ public class CameraMover : MonoBehaviour {
             newPosition.z = 0;
             newPosition += offset;
             transform.position = Vector3.Lerp(transform.position, newPosition, 0.05f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(rotationOffset), 0.95f);
         //}
        
     }
