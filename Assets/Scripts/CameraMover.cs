@@ -32,7 +32,7 @@ public class CameraMover : MonoBehaviour {
         //{
             newPosition.z = 0;
             newPosition += offset;
-            transform.position = Vector3.Lerp(transform.position, newPosition, 0.05f);
+            transform.position = Vector3.Lerp(transform.position, newPosition, 0.1f);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(rotationOffset), 0.95f);
         //}
        
