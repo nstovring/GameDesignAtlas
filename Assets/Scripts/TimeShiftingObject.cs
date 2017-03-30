@@ -29,8 +29,6 @@ public class TimeShiftingObject : MonoBehaviour {
             }
         }
 
-
-
 		if(LevelManager.lm != null)
         {
             LevelManager.lm.TimeShift += new LevelManager.TimeShiftHandler(CallTimeShift);
@@ -200,6 +198,9 @@ public class TimeShiftingObject : MonoBehaviour {
 
         if (transform.GetComponent<Renderer>() != null)
             transform.GetComponent<Renderer>().enabled = boolean;
+
+        if (transform.GetComponent<Collider>() != null)
+            transform.GetComponent<Collider>().enabled = boolean;
 
         if (transform.childCount > 0)
             transform.GetChild(0).gameObject.SetActive(boolean);

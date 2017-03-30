@@ -10,8 +10,16 @@ public class MagicElevator : MonoBehaviour, ILinkable {
     {
         Debug.Log("Activate Field");
         LevitationField.gameObject.SetActive(true);
+        //LevitationField.transform.GetComponent<Renderer>().enabled = true;
+        //LevitationField.transform.GetComponent<Renderer>().enabled = false;
+
     }
 
+    public void Deactivate()
+    {
+        LevitationField.gameObject.SetActive(false);
+    }     
+    
     // Use this for initialization
     void Start () {
 		
