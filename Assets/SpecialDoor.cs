@@ -9,14 +9,19 @@ public class SpecialDoor : MonoBehaviour, IInteractable {
 
     public void Interact()
     {
-        currentUnlockedLocks = LevelManager.lm.keyscollected;
-        OpenLock();
+        //currentUnlockedLocks = LevelManager.lm.keyscollected;
+        for (int i = 0; i < LevelManager.lm.keyscollected; i++)
+        {
+            OpenLock();
+        }
+        LevelManager.lm.keyscollected -= currentUnlockedLocks;
     }
 
     public Animator animator;
 
     void OpenLock()
     {
+        currentUnlockedLocks++;
         animator.SetInteger("OpenedLocks", currentUnlockedLocks);
     }
 
