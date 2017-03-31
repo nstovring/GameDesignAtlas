@@ -379,6 +379,7 @@ public class CharacterMotorNew : MonoBehaviour
 
         myAnimator.SetBool("Grounded", grounded);
         myAnimator.SetFloat("YVelocity", Mathf.Abs(movement.velocity.y));
+        transform.position = new Vector3(transform.position.x,transform.position.y,0);
     }
 
     private Vector3 ApplyInputVelocityChange(Vector3 velocity)

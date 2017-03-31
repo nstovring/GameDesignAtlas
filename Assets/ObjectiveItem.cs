@@ -20,10 +20,14 @@ public class ObjectiveItem : InteractableObject {
         //    LevelManager.lm.spherescollected += 1; 
         //if (type == ObjectiveItemType.Artifact)
         //    LevelManager.lm.timeShiftingClass.CanPlayerTimeShift = true; 
-
+        MagicPedestal tempPedestal = GetComponent<MagicPedestal>();
+        if (tempPedestal!= null)
+        {
+            tempPedestal.Interact();
+        }
 
         //Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected);
-        Destroy(this.gameObject, 0.1f);
+        Destroy(this.gameObject, 0.5f);
         
 
     }
