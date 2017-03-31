@@ -695,6 +695,12 @@ public class CharacterMotorNew : MonoBehaviour
                 }
             }
         }
+
+        if (other.transform.tag == "Boundarycheck")
+        {
+            LevelManager.lm.restartLevel();
+        }
+
     }
 
     void OnTriggerStay(Collider other)

@@ -29,8 +29,6 @@ public class TimeShiftingObject : MonoBehaviour {
             }
         }
 
-
-
 		if(LevelManager.lm != null)
         {
             LevelManager.lm.TimeShift += new LevelManager.TimeShiftHandler(CallTimeShift);
@@ -167,6 +165,7 @@ public class TimeShiftingObject : MonoBehaviour {
                                 yield return new WaitForSeconds(delay);
                             }
                             myMaterial.SetFloat("_Blend", 1);
+                            SetObjectAnimState(true);
                         }
                         else
                         {
@@ -176,6 +175,7 @@ public class TimeShiftingObject : MonoBehaviour {
                                 yield return new WaitForSeconds(delay);
                             }
                             myMaterial.SetFloat("_Blend", 0);
+                            SetObjectAnimState(false);
                         }
                     }
                     break;
@@ -195,13 +195,26 @@ public class TimeShiftingObject : MonoBehaviour {
     {
         if (transform.GetComponent<Animator>() != null)
         {
-            transform.GetComponent<Animator>().enabled = boolean;
+                transform.GetComponent<Animator>().enabled = boolean;
         }
 
         if (transform.GetComponent<Renderer>() != null)
             transform.GetComponent<Renderer>().enabled = boolean;
 
+        if (transform.GetComponent<Collider>() != null)
+            transform.GetComponent<Collider>().enabled = boolean;
+
         if (transform.childCount > 0)
             transform.GetChild(0).gameObject.SetActive(boolean);
+    }
+
+
+    void SetObjectAnimState(bool boolean)
+    {
+        if (transform.GetComponent<Animator>() != null)
+        {
+           
+                transform.GetComponent<Animator>().SetBool("TransistionToPast", boolean);
+        }
     }
 }

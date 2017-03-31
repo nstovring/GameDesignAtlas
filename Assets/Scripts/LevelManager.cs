@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour {
     public int spherescollected = 0;
     public delegate void TimeShiftHandler(bool time);
     public event TimeShiftHandler TimeShift;
+
+    public TimeShifting timeShiftingClass;
     // Use this for initialization
     IEnumerator Start () {
 		lm = this;
@@ -49,7 +51,15 @@ public class LevelManager : MonoBehaviour {
 	void Update () {
 		
 	}
-
+    public void SetObjectivesGathered(ObjectiveItem.ObjectiveItemType type)
+    {
+        if (type == ObjectiveItem.ObjectiveItemType.Key)
+            keyscollected += 1;
+        if (type == ObjectiveItem.ObjectiveItemType.PowerCore)
+            spherescollected += 1;
+        if (type == ObjectiveItem.ObjectiveItemType.Artifact)
+            timeShiftingClass.CanPlayerTimeShift = true;
+    }
 	//Receives a 'true' from TimeShifting class if shifting to present, else false
 	public void changeTime(bool present) {
         //If changing to present

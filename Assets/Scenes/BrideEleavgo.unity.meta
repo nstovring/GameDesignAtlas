@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scenes/BrideEleavgo.unity.meta
 guid: acb93cbc625240748893901f0d2b1eb6
 timeCreated: 1490692805
+=======
+guid: 5c0a231dd515ee34cb4af12a9714d41c
+folderAsset: yes
+timeCreated: 1490698977
+>>>>>>> origin/master:Assets/Textures.meta
 licenseType: Free
 DefaultImporter:
   userData: 
