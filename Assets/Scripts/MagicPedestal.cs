@@ -18,10 +18,17 @@ public class MagicPedestal : MonoBehaviour, IInteractable {
                 item.Activate();
                 Debug.Log("Activate Linked Object");
 
-                transform.gameObject.SetActive(true);
+                //transform.gameObject.SetActive(true);
                 transform.GetChild(0).gameObject.SetActive(true);
+                LevelManager.lm.spherescollected--;
             }
             
+        }
+
+        if (LevelManager.lm.spherescollected > 0)
+        {
+            transform.GetChild(0).gameObject.SetActive(true);
+            LevelManager.lm.spherescollected--;
         }
     }
 
