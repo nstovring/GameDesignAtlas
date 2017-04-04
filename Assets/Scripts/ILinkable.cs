@@ -5,4 +5,5 @@ using UnityEngine;
 public interface ILinkable {
 
     void Activate();
+    void Deactivate();
 }

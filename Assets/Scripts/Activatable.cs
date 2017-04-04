@@ -23,7 +23,10 @@ public class Activatable : MonoBehaviour, ILinkable
         gameObject.SetActive(false);
 
     }
+    public void Deactivate()
+    {
 
+    }
     void Update()
     {
 
