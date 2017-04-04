@@ -10,6 +10,11 @@ public class GateWay : MonoBehaviour, ILinkable {
         animator.SetBool("Open", true);
     }
 
+    public void Deactivate()
+    {
+        animator.SetBool("Open", false);
+    }
+
     // Use this for initialization
     void Start () {
 		
