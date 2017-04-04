@@ -193,6 +193,15 @@ public class TimeShiftingObject : MonoBehaviour {
 
     void SetObjectState(bool boolean)
     {
+        if(myRenderer.Count > 0)
+        {
+            foreach (var item in myRenderer)
+            {
+                if(item.GetComponent<Collider>() != null)
+                item.GetComponent<Collider>().enabled = boolean;
+            }
+        }
+
         if (transform.GetComponent<Animator>() != null)
         {
                 transform.GetComponent<Animator>().enabled = boolean;
