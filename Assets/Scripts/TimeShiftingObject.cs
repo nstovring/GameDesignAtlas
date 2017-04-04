@@ -71,11 +71,14 @@ public class TimeShiftingObject : MonoBehaviour {
                                     yield break;
                                 }
                             }
-                            while (myMaterial.GetFloat("_Blend") < 0.95)
+                            if (myMaterial.HasProperty("_Blend"))
                             {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
-                                yield return new WaitForSeconds(delay);
+                                while (myMaterial.GetFloat("_Blend") < 0.95)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                    myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
                             }
                             myMaterial.SetFloat("_Blend", 1);
                             myMaterial.SetFloat("_TimeShift", 0);
@@ -91,14 +94,17 @@ public class TimeShiftingObject : MonoBehaviour {
                             {
                                 yield break;
                             }
-                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            if (myMaterial.HasProperty("_Blend"))
                             {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
-                                yield return new WaitForSeconds(delay);
+                                while (myMaterial.GetFloat("_Blend") > 0.05)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                    myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
+                                myMaterial.SetFloat("_Blend", 0);
+                                myMaterial.SetFloat("_TimeShift", 1);
                             }
-                            myMaterial.SetFloat("_Blend", 0);
-                            myMaterial.SetFloat("_TimeShift", 1);
                             if (transform.GetComponent<Collider>()!= null)
                                 transform.GetComponent<Collider>().enabled = true;
                           
@@ -118,14 +124,17 @@ public class TimeShiftingObject : MonoBehaviour {
                             {
                                 yield break;
                             }
-                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            if (myMaterial.HasProperty("_Blend"))
                             {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
-                                yield return new WaitForSeconds(delay);
+                                while (myMaterial.GetFloat("_Blend") > 0.05)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                    myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 0, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
+                                myMaterial.SetFloat("_Blend", 0);
+                                myMaterial.SetFloat("_TimeShift", 0);
                             }
-                            myMaterial.SetFloat("_Blend", 0);
-                            myMaterial.SetFloat("_TimeShift", 0);
                             if (transform.GetComponent<Collider>() != null)
                                 transform.GetComponent<Collider>().enabled = false;
                            
@@ -137,15 +146,18 @@ public class TimeShiftingObject : MonoBehaviour {
                             if (invisibleObject)
                             {
                                 yield break;
-                            } 
-                            while (myMaterial.GetFloat("_Blend") < 0.95)
-                            {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                                myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
-                                yield return new WaitForSeconds(delay);
                             }
-                            myMaterial.SetFloat("_Blend", 1);
-                            myMaterial.SetFloat("_TimeShift", 1);
+                            if (myMaterial.HasProperty("_Blend"))
+                            {
+                                while (myMaterial.GetFloat("_Blend") < 0.95)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                    myMaterial.SetFloat("_TimeShift", Mathf.Lerp(myMaterial.GetFloat("_TimeShift"), 1, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
+                                myMaterial.SetFloat("_Blend", 1);
+                                myMaterial.SetFloat("_TimeShift", 1);
+                            }
                             if (transform.GetComponent<Collider>() != null)
                                 transform.GetComponent<Collider>().enabled = true;
                             
@@ -159,22 +171,28 @@ public class TimeShiftingObject : MonoBehaviour {
                     {
                         if (time)
                         {
-                            while (myMaterial.GetFloat("_Blend") < 0.95)
+                            if (myMaterial.HasProperty("_Blend"))
                             {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
-                                yield return new WaitForSeconds(delay);
+                                while (myMaterial.GetFloat("_Blend") < 0.95)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 1, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
+                                myMaterial.SetFloat("_Blend", 1);
                             }
-                            myMaterial.SetFloat("_Blend", 1);
                             SetObjectAnimState(true);
                         }
                         else
                         {
-                            while (myMaterial.GetFloat("_Blend") > 0.05)
+                            if (myMaterial.HasProperty("_Blend"))
                             {
-                                myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
-                                yield return new WaitForSeconds(delay);
+                                while (myMaterial.GetFloat("_Blend") > 0.05)
+                                {
+                                    myMaterial.SetFloat("_Blend", Mathf.Lerp(myMaterial.GetFloat("_Blend"), 0, 0.1f));
+                                    yield return new WaitForSeconds(delay);
+                                }
+                                myMaterial.SetFloat("_Blend", 0);
                             }
-                            myMaterial.SetFloat("_Blend", 0);
                             SetObjectAnimState(false);
                         }
                     }
@@ -222,8 +240,7 @@ public class TimeShiftingObject : MonoBehaviour {
     {
         if (transform.GetComponent<Animator>() != null)
         {
-           
-                transform.GetComponent<Animator>().SetBool("TransistionToPast", boolean);
+           transform.GetComponent<Animator>().SetBool("TransistionToPast", boolean);
         }
     }
 }
