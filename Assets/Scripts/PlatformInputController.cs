@@ -13,26 +13,40 @@ public class PlatformInputController : MonoBehaviour
     public bool autoRotate = true;
     public float maxRotationSpeed = 360.0f;
 
-    private CharacterMotorNew motor;
+    [HideInInspector]
+    public CharacterMotorNew motor;
 
     [HideInInspector]
     public Animator myAnimator;
 
-    float HSpeed;
+    public float HSpeed;
+
+    public bool isPastSelf;
+    public InputReader pastSelfReader;
+    InputRecorder myRecorder;
     // Use this for initialization
     void Awake()
     {
         motor = GetComponent<CharacterMotorNew>();
         myAnimator = GetComponent<Animator>();
+        curRecordTime = maxRecordTime;
+        myRecorder = GetComponent<InputRecorder>();
     }
 
     // Update is called once per frame
+
+    public float maxRecordTime = 10f;
+
+    //public float 
+    float curRecordTime;
     void Update()
     {
-
-        HSpeed = Input.GetAxis("Horizontal");
-
-
+        if (!isPastSelf)
+        {
+            HSpeed = Input.GetAxis("Horizontal");
+           
+            
+        }
         // Get the input vector from kayboard or analog stick
         Vector3 directionVector = new Vector3(HSpeed, 0, 0);
 
@@ -63,7 +77,26 @@ public class PlatformInputController : MonoBehaviour
 
         // Apply the direction to the CharacterMotor
         motor.inputMoveDirection = directionVector;
-        motor.inputJump = Input.GetButton("Jump");
+        if (!isPastSelf)
+        {
+            motor.inputJump = Input.GetButton("Jump");
+            if (curRecordTime > 0)
+            {
+                int jumping = (motor.inputJump) ? 1 : 0;
+                myRecorder.RecordInput(new Vector3(HSpeed, jumping, 0));
+                curRecordTime -= Time.deltaTime;
+            }
+            else
+            {
+
+            }
+            if (Input.GetKeyUp(KeyCode.P))
+            {
+                pastSelfReader.SetRecInput(myRecorder.GetInput(), myRecorder.pastPos);
+                myRecorder.ResetInput();
+                curRecordTime = maxRecordTime;
+            }
+        }
 
         // Set rotation to the move direction	
         if (autoRotate && directionVector.sqrMagnitude > 0.01)

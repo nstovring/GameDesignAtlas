@@ -12,6 +12,7 @@ public class Activatable : MonoBehaviour, ILinkable
 
         for (int i = 0; i < transform.childCount; i++)
         {
+            transform.GetChild(i).gameObject.layer = 9;
             transform.GetChild(i).gameObject.AddComponent<Rigidbody>();
         }
 
