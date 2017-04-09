@@ -7,29 +7,50 @@ public class MagicPedestal : MonoBehaviour, IInteractable {
 
     public IList<ILinkable> LinkedObjects;
     public List<Transform> LinkedTansforms;
+    public bool hasOrb = false;
     public void Interact()
     {
-        Debug.Log(LevelManager.lm.spherescollected);
-
-        foreach (var item in LinkedObjects)
+        if (!hasOrb)
         {
-            if (LevelManager.lm.spherescollected == 1)
-            {
-                item.Activate();
-                Debug.Log("Activate Linked Object");
+            Debug.Log(LevelManager.lm.spherescollected);
 
-                //transform.gameObject.SetActive(true);
-                if(transform.childCount > 0)
+            foreach (var item in LinkedObjects)
+            {
+                if (LevelManager.lm.spherescollected > 0)
+                {
+                    item.Activate();
+                    Debug.Log("Activate Linked Object");
+                    hasOrb = true;
+                    //transform.gameObject.SetActive(true);
+                    if (transform.childCount > 0)
+                        transform.GetChild(0).gameObject.SetActive(true);
+                    //LevelManager.lm.spherescollected--;
+                }
+
+            }
+            LevelManager.lm.spherescollected--;
+
+            if (LevelManager.lm.spherescollected > 0)
+            {
                 transform.GetChild(0).gameObject.SetActive(true);
                 LevelManager.lm.spherescollected--;
+                hasOrb = true;
             }
-            
         }
-
-        if (LevelManager.lm.spherescollected > 0)
+        else
         {
-            transform.GetChild(0).gameObject.SetActive(true);
-            LevelManager.lm.spherescollected--;
+            foreach (var item in LinkedObjects)
+            {
+                //deactivate
+                item.Deactivate();
+                    Debug.Log("Activate Linked Object");
+                    //transform.gameObject.SetActive(true);
+                    if (transform.childCount > 0)
+                        transform.GetChild(0).gameObject.SetActive(false);
+            }
+            transform.GetChild(0).gameObject.SetActive(false);
+            LevelManager.lm.spherescollected++;
+            hasOrb = false;
         }
     }
 

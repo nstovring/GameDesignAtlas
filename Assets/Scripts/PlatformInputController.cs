@@ -13,12 +13,14 @@ public class PlatformInputController : MonoBehaviour
     public bool autoRotate = true;
     public float maxRotationSpeed = 360.0f;
 
-    private CharacterMotorNew motor;
+    [HideInInspector]
+    public CharacterMotorNew motor;
 
     [HideInInspector]
     public Animator myAnimator;
 
-    float HSpeed;
+    public float HSpeed;
+
     // Use this for initialization
     void Awake()
     {
@@ -27,12 +29,14 @@ public class PlatformInputController : MonoBehaviour
     }
 
     // Update is called once per frame
+
+    public float maxRecordTime = 10f;
+
+    //public float 
+    float curRecordTime;
     void Update()
     {
-
-        HSpeed = Input.GetAxis("Horizontal");
-
-
+         HSpeed = Input.GetAxis("Horizontal");
         // Get the input vector from kayboard or analog stick
         Vector3 directionVector = new Vector3(HSpeed, 0, 0);
 
