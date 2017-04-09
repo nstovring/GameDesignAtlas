@@ -43,13 +43,20 @@ public class LightTrigger : MonoBehaviour {
     IEnumerator ColorLerp()
     {
         Quaternion quatLightDir = Quaternion.Euler(lightRotation);
-        Color currentColor = colorA;
+        Color currentColor = light.color;
+        Vector3 currentColorVec = new Vector3(currentColor.r, currentColor.g, currentColor.b);
+        Vector3 NewColorVector = new Vector3(colorB.r, colorB.g, colorB.b);
+
         while (currentColor != colorB)
         {
             currentColor = Color.Lerp(currentColor, colorB, 0.005f);
+            currentColorVec = new Vector3(currentColor.r, currentColor.g, currentColor.b);
             light.color = currentColor;
-            if (currentColor.maxColorComponent - colorB.maxColorComponent <= 0.1f)
-                light.color = colorB;
+            if (Vector3.Distance(currentColorVec, NewColorVector) <= 0.1f)
+            {
+                currentColor = colorB;
+                light.color = currentColor;
+            }
             yield return new WaitForSeconds(0.01f);
         }
     }
