@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 589aef2c462fe2348add6d973a524358
 timeCreated: 1491415169
+=======
+guid: 1eec708ee29f1384a898c11af6632cba
+timeCreated: 1491735342
+>>>>>>> Time-Prototyping
 licenseType: Free
 MonoImporter:
   serializedVersion: 2

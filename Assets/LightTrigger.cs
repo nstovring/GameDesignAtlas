@@ -13,6 +13,8 @@ public class LightTrigger : MonoBehaviour {
     public Color colorB;
 
     public Light light;
+
+    public float speed = 0.01f;
     // Use this for initialization
     void Start () {
 		
@@ -46,7 +48,7 @@ public class LightTrigger : MonoBehaviour {
         Color currentColor = colorA;
         while (currentColor != colorB)
         {
-            currentColor = Color.Lerp(currentColor, colorB, 0.005f);
+            currentColor = Color.Lerp(currentColor, colorB, speed/2);
             light.color = currentColor;
             if (currentColor.maxColorComponent - colorB.maxColorComponent <= 0.1f)
                 light.color = colorB;
@@ -60,7 +62,7 @@ public class LightTrigger : MonoBehaviour {
         while (Quaternion.Angle(light.transform.rotation, quatLightDir) > 0.1f)
         {
 
-            light.transform.rotation = Quaternion.Lerp(light.transform.rotation, quatLightDir, 0.01f);
+            light.transform.rotation = Quaternion.Lerp(light.transform.rotation, quatLightDir, speed);
             if (Quaternion.Angle(light.transform.rotation, quatLightDir) <= 0.1f)
                 light.transform.rotation = quatLightDir;
             yield return new WaitForSeconds(0.01f);
