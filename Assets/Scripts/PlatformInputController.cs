@@ -23,14 +23,14 @@ public class PlatformInputController : MonoBehaviour
 
     public bool isPastSelf;
     public InputReader pastSelfReader;
-    InputRecorder myRecorder;
+    //InputRecorder myRecorder;
     // Use this for initialization
     void Awake()
     {
         motor = GetComponent<CharacterMotorNew>();
         myAnimator = GetComponent<Animator>();
         curRecordTime = maxRecordTime;
-        myRecorder = GetComponent<InputRecorder>();
+//myRecorder = GetComponent<InputRecorder>();
     }
 
     // Update is called once per frame
@@ -83,7 +83,7 @@ public class PlatformInputController : MonoBehaviour
             if (curRecordTime > 0)
             {
                 int jumping = (motor.inputJump) ? 1 : 0;
-                myRecorder.RecordInput(new Vector3(HSpeed, jumping, 0));
+               // myRecorder.RecordInput(new Vector3(HSpeed, jumping, 0));
                 curRecordTime -= Time.deltaTime;
             }
             else
@@ -92,8 +92,8 @@ public class PlatformInputController : MonoBehaviour
             }
             if (Input.GetKeyUp(KeyCode.P))
             {
-                pastSelfReader.SetRecInput(myRecorder.GetInput(), myRecorder.pastPos);
-                myRecorder.ResetInput();
+              //  pastSelfReader.SetRecInput(myRecorder.GetInput(), myRecorder.pastPos);
+              //  myRecorder.ResetInput();
                 curRecordTime = maxRecordTime;
             }
         }

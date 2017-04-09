@@ -16,7 +16,7 @@ public class SplineController : MonoBehaviour
 	public bool AutoClose = true;
 	public bool HideOnExecute = true;
 
-
+    public SplineMovement mSplinemovement;
 	SplineInterpolator mSplineInterp;
 	Transform[] mTransforms;
 
@@ -61,15 +61,23 @@ public class SplineController : MonoBehaviour
 	{
 		interp.Reset();
 
-		float step = (AutoClose) ? Duration / trans.Length :
-			Duration / (trans.Length - 1);
+        //float step = mSplinemovement.HSpeed;
+
+		float step = (AutoClose) ? Duration / trans.Length : Duration / (trans.Length - 1);
+
 
 		int c;
 		for (c = 0; c < trans.Length; c++)
 		{
 			if (OrientationMode == eOrientationMode.NODE)
 			{
-				interp.AddPoint(trans[c].position, trans[c].rotation, step * c, new Vector2(0, 1));
+                if(step > 0)
+                interp.AddPoint(trans[c].position, trans[c].rotation, step * c, new Vector2(0, 1));
+                Debug.Log(step * c);
+
+               // interp.AddPoint(trans[c].position, trans[c].rotation, step * c, new Vector2(0, 1));
+
+
 			}
 			else if (OrientationMode == eOrientationMode.TANGENT)
 			{
@@ -135,4 +143,13 @@ public class SplineController : MonoBehaviour
 			mSplineInterp.StartInterpolation(null, true, WrapMode);
 		}
 	}
+
+    void FollowSplineMovement()
+    {
+        if (mTransforms.Length > 0)
+        {
+            SetupSplineInterpolator(mSplineInterp, mTransforms);
+            mSplineInterp.StartInterpolation(null, true, WrapMode);
+        }
+    }
 }

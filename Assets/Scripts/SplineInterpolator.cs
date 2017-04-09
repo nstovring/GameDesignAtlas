@@ -6,9 +6,14 @@ public enum eEndPointsMode { AUTO, AUTOCLOSED, EXPLICIT }
 public enum eWrapMode { ONCE, LOOP }
 public delegate void OnEndCallback();
 
+
+
 public class SplineInterpolator : MonoBehaviour
 {
 	eEndPointsMode mEndPointsMode = eEndPointsMode.AUTO;
+
+    public SplineMovement mSplineMovement;
+    public float param;
 
 	internal class SplineNode
 	{
@@ -174,7 +179,9 @@ public class SplineInterpolator : MonoBehaviour
 		if (mState != "Stopped")
 		{
 			// Calculates the t param between 0 and 1
-			float param = (mCurrentTime - mNodes[mCurrentIdx].Time) / (mNodes[mCurrentIdx + 1].Time - mNodes[mCurrentIdx].Time);
+			//param = (mCurrentTime - mNodes[mCurrentIdx].Time) / (mNodes[mCurrentIdx + 1].Time - mNodes[mCurrentIdx].Time);
+
+            float param = mSplineMovement.HSpeed * Time.deltaTime;
 
 			// Smooth the param
 			param = MathUtils.Ease(param, mNodes[mCurrentIdx].EaseIO.x, mNodes[mCurrentIdx].EaseIO.y);
