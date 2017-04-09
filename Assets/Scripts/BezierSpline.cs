@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+public class BezierSpline : MonoBehaviour {
+    public Vector3[] points;
+=======
 ﻿using System;
 using UnityEngine;
 
@@ -39,6 +47,7 @@ public class BezierSpline : MonoBehaviour {
         points[index] = point;
         EnforceMode(index);
     }
+>>>>>>> Time-Prototyping
 
     public int CurveCount
     {
@@ -47,6 +56,8 @@ public class BezierSpline : MonoBehaviour {
             return (points.Length - 1) / 3;
         }
     }
+<<<<<<< HEAD
+=======
 
     public BezierControlPointMode GetControlPointMode(int index)
     {
@@ -107,6 +118,7 @@ public class BezierSpline : MonoBehaviour {
 
 
 
+>>>>>>> Time-Prototyping
     public Vector3 GetPoint(float t)
     {
         int i;
@@ -122,11 +134,17 @@ public class BezierSpline : MonoBehaviour {
             t -= i;
             i *= 3;
         }
+<<<<<<< HEAD
+        return transform.TransformPoint(Bezier.GetPoint(points[0], points[1], points[2], points[3], t));
+    }
+
+=======
         return transform.TransformPoint(Bezier.GetPoint(
             points[i], points[i + 1], points[i + 2], points[i + 3], t));
     }
 
 
+>>>>>>> Time-Prototyping
     public Vector3 GetVelocity(float t)
     {
         int i;
@@ -142,8 +160,13 @@ public class BezierSpline : MonoBehaviour {
             t -= i;
             i *= 3;
         }
+<<<<<<< HEAD
+        return transform.TransformPoint(
+            Bezier.GetFirstDerivative(points[0], points[1], points[2], points[3], t)) - transform.position;
+=======
         return transform.TransformPoint(Bezier.GetFirstDerivative(
             points[i], points[i + 1], points[i + 2], points[i + 3], t)) - transform.position;
+>>>>>>> Time-Prototyping
     }
 
     public Vector3 GetDirection(float t)
@@ -151,6 +174,18 @@ public class BezierSpline : MonoBehaviour {
         return GetVelocity(t).normalized;
     }
 
+<<<<<<< HEAD
+    public void Reset()
+    {
+        points = new Vector3[] {
+            new Vector3(1f, 0f, 0f),
+            new Vector3(2f, 0f, 0f),
+            new Vector3(3f, 0f, 0f),
+            new Vector3(4f, 0f, 0f)
+        };
+    }
+=======
+>>>>>>> Time-Prototyping
     public void AddCurve()
     {
         Vector3 point = points[points.Length - 1];
@@ -161,9 +196,12 @@ public class BezierSpline : MonoBehaviour {
         points[points.Length - 2] = point;
         point.x += 1f;
         points[points.Length - 1] = point;
+<<<<<<< HEAD
+=======
 
         Array.Resize(ref modes, modes.Length + 1);
         modes[modes.Length - 1] = modes[modes.Length - 2];
         EnforceMode(points.Length - 4);
+>>>>>>> Time-Prototyping
     }
 }

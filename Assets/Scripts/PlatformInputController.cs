@@ -21,16 +21,22 @@ public class PlatformInputController : MonoBehaviour
 
     public float HSpeed;
 
+<<<<<<< HEAD
+=======
     public bool isPastSelf;
     public InputReader pastSelfReader;
     //InputRecorder myRecorder;
+>>>>>>> Time-Prototyping
     // Use this for initialization
     void Awake()
     {
         motor = GetComponent<CharacterMotorNew>();
         myAnimator = GetComponent<Animator>();
+<<<<<<< HEAD
+=======
         curRecordTime = maxRecordTime;
 //myRecorder = GetComponent<InputRecorder>();
+>>>>>>> Time-Prototyping
     }
 
     // Update is called once per frame
@@ -41,12 +47,7 @@ public class PlatformInputController : MonoBehaviour
     float curRecordTime;
     void Update()
     {
-        if (!isPastSelf)
-        {
-            HSpeed = Input.GetAxis("Horizontal");
-           
-            
-        }
+         HSpeed = Input.GetAxis("Horizontal");
         // Get the input vector from kayboard or analog stick
         Vector3 directionVector = new Vector3(HSpeed, 0, 0);
 
@@ -77,6 +78,9 @@ public class PlatformInputController : MonoBehaviour
 
         // Apply the direction to the CharacterMotor
         motor.inputMoveDirection = directionVector;
+<<<<<<< HEAD
+        motor.inputJump = Input.GetButton("Jump");
+=======
         if (!isPastSelf)
         {
             motor.inputJump = Input.GetButton("Jump");
@@ -97,6 +101,7 @@ public class PlatformInputController : MonoBehaviour
                 curRecordTime = maxRecordTime;
             }
         }
+>>>>>>> Time-Prototyping
 
         // Set rotation to the move direction	
         if (autoRotate && directionVector.sqrMagnitude > 0.01)

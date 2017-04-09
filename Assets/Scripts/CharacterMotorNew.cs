@@ -670,12 +670,15 @@ public class CharacterMotorNew : MonoBehaviour
         }
         if (other.transform.position.y > transform.position.y && other.transform.tag == "Ledge")
         {
-            movement.velocity = Vector3.zero;
-            canControl = false;
-            myAnimator.SetBool("IsHanging", true);
-            myAnimator.applyRootMotion = true;
-            controller.enabled = false;
-            transform.position = other.GetComponent<Ledge>().GetHangingPosition(transform.position)-new Vector3(0,1.44f,0);
+            if (myAnimator.GetBool("Climbing") == false)
+            {
+                movement.velocity = Vector3.zero;
+                canControl = false;
+                myAnimator.SetBool("IsHanging", true);
+                myAnimator.applyRootMotion = true;
+                controller.enabled = false;
+                transform.position = other.GetComponent<Ledge>().GetHangingPosition(transform.position) - new Vector3(0, 1.44f, 0);
+            }
             //Ledge = other.transform;
             //CurrentMoveType = MovementTypes.Hanging;
         }

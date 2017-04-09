@@ -32,7 +32,7 @@ public class TimeShiftingObject : MonoBehaviour {
 		if(LevelManager.lm != null)
         {
             LevelManager.lm.TimeShift += new LevelManager.TimeShiftHandler(CallTimeShift);
-            Debug.Log("i am subscribing");
+            //Debug.Log("i am subscribing");
         }
         else
         {
