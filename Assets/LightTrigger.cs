@@ -31,6 +31,7 @@ public class LightTrigger : MonoBehaviour {
         //light.transform.rotation = Quaternion.Euler(lightRotation);
         StartCoroutine(RotationLerp());
         StartCoroutine(ColorLerp());
+        StartCoroutine(AmbientLerp());
     }
 
     public void OnTriggerExit(Collider other)
@@ -39,8 +40,26 @@ public class LightTrigger : MonoBehaviour {
         //cameraMover.rotationOffset = defaultCameraRotation;
         //StartCoroutine(DelayedSpeedReset());
     }
+    public float newAmbientIntensity = 0;
+    IEnumerator AmbientLerp()
+    {
+        float ambientIntensity = RenderSettings.ambientIntensity;
 
-    IEnumerator ColorLerp()
+        while (ambientIntensity != newAmbientIntensity)
+        {
+            ambientIntensity = Mathf.Lerp(ambientIntensity, newAmbientIntensity, 0.01f);
+            if (Mathf.Abs(ambientIntensity-newAmbientIntensity) <= 0.1f)
+            {
+                ambientIntensity = newAmbientIntensity;
+                //RenderSettings.ambientIntensity = newAmbientIntensity;
+            }
+           RenderSettings.ambientIntensity = ambientIntensity;
+           yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+
+        IEnumerator ColorLerp()
     {
         Quaternion quatLightDir = Quaternion.Euler(lightRotation);
         Color currentColor = light.color;
@@ -51,12 +70,12 @@ public class LightTrigger : MonoBehaviour {
         {
             currentColor = Color.Lerp(currentColor, colorB, 0.005f);
             currentColorVec = new Vector3(currentColor.r, currentColor.g, currentColor.b);
-            light.color = currentColor;
-            if (Vector3.Distance(currentColorVec, NewColorVector) <= 0.1f)
+            if (Vector3.Distance(currentColorVec, NewColorVector) <= 0.01f)
             {
                 currentColor = colorB;
-                light.color = currentColor;
             }
+            light.color = currentColor;
+
             yield return new WaitForSeconds(0.01f);
         }
     }
