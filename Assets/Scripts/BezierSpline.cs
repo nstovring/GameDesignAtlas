@@ -244,7 +244,7 @@ public class BezierSpline : MonoBehaviour {
     public float CalculateSplineLength()
     {
         int steps = 100 * ControlPointCount;
-        float stepLength = 0.5f;
+        float stepLength = 0.05f;
         float splineLengthInternal = 0;
         for (float i = 0; i < steps; i += stepLength)
         {
