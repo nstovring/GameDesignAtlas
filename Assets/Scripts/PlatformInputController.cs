@@ -35,18 +35,35 @@ public class PlatformInputController : MonoBehaviour
     public float progress;
     public float splineLength;
     public Vector3 velocityVector;
+    public Vector3 directionVector = Vector3.zero;
+    public bool OnPath = false;
     void Update()
     {
         HSpeed = Input.GetAxis("Horizontal");
         // Get the input vector from kayboard or analog stick
-        splineLength = spline.CalculateSplineLength();
-        velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
-        progress += (HSpeed / splineLength) * Time.deltaTime*(velocityVector.magnitude);
-        Vector3 directionVector = Vector3.zero;
-        if (spline != null)
-        directionVector = new Vector3(spline.GetDirection(progress).x*HSpeed, spline.GetDirection(progress).z *HSpeed, 0);
+      
+
+        if (spline != null && OnPath)
+        {
+            splineLength = spline.CalculateSplineLength();
+            velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
+            progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
+            
+            directionVector = new Vector3(spline.GetDirection(progress).x * HSpeed,  0, spline.GetDirection(progress).z * HSpeed);
+
+            if(progress > 1)
+            {
+                OnPath = false;
+            }
+        }
+
+        //  directionVector = new Vector3(spline.GetDirection(progress).x * HSpeed, spline.GetDirection(progress).z * HSpeed, 0);
         else
-        directionVector = new Vector3(HSpeed, 0, 0);
+        {
+            directionVector = new Vector3(HSpeed, 0, 0);
+        }
+        Debug.DrawRay(transform.position, directionVector, Color.red );
+        
 
         if (directionVector != Vector3.zero)
         {
@@ -67,11 +84,11 @@ public class PlatformInputController : MonoBehaviour
         }
 
         // Rotate the input vector into camera space so up is camera's up and right is camera's right
-        directionVector = Camera.main.transform.rotation * directionVector;
+       // directionVector = Camera.main.transform.rotation * directionVector;
 
         // Rotate input vector to be perpendicular to character's up vector
-        Quaternion camToCharacterSpace = Quaternion.FromToRotation(-Camera.main.transform.forward, transform.up);
-        directionVector = (camToCharacterSpace * directionVector);
+       // Quaternion camToCharacterSpace = Quaternion.FromToRotation(-Camera.main.transform.forward, transform.up);
+       // directionVector = (camToCharacterSpace * directionVector);
 
         // Apply the direction to the CharacterMotor
         motor.inputMoveDirection = directionVector;

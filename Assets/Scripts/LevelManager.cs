@@ -44,7 +44,7 @@ public class LevelManager : MonoBehaviour {
             
         }
         yield return new WaitForSeconds(delay+ delay);
-        TimeShift(true);
+      //  TimeShift(true);
 	}
 	
 	// Update is called once per frame

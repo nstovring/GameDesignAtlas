@@ -6,18 +6,27 @@ public class SplineWalker : MonoBehaviour {
 
     public SplineWalkerMode mode;
     public BezierSpline spline;
+    public Transform player;
 
     private bool goingForward = true;
     public float progress;
     public float HSpeed;
+    public float splineLength;
     public bool lookForward;
+
+    private void Start()
+    {
+        splineLength = spline.CalculateSplineLength();
+
+    }
 
     private void Update()
     {
         HSpeed = Input.GetAxis("Horizontal");
         if (goingForward)
         {
-            progress += Time.deltaTime * HSpeed;
+            progress += (HSpeed / splineLength) * Time.deltaTime * (HSpeed);
+           // progress += Time.deltaTime * HSpeed;
             if (progress > 1f)
             {
                 if (mode == SplineWalkerMode.Once)
@@ -37,6 +46,8 @@ public class SplineWalker : MonoBehaviour {
         }
         else
         {
+
+
             progress -= Time.deltaTime / HSpeed;
             if (progress < 0f)
             {
@@ -50,6 +61,10 @@ public class SplineWalker : MonoBehaviour {
         if (lookForward)
         {
             transform.LookAt(position + spline.GetDirection(progress));
+        }
+        else
+        {
+            transform.LookAt(player);
         }
     }
 }
