@@ -7,13 +7,20 @@ public class SplineTrigger : MonoBehaviour, IInteractable {
 
     public BezierSpline spline;
 
+    private GameObject player;
+
     public void Interact()
     {
 
         if(spline != null)
         {
             Debug.Log("give player spline");
+            player = GameObject.FindGameObjectsWithTag("Player")[0];
 
+            player.GetComponent<PlatformInputController>().spline = spline;
+            player.GetComponent<PlatformInputController>().OnPath = true;
+
+            Camera.main.GetComponent<CameraMover>().SplineMovement = true;
 
         }
         else
