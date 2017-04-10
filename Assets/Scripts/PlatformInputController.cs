@@ -42,8 +42,11 @@ public class PlatformInputController : MonoBehaviour
         splineLength = spline.CalculateSplineLength();
         velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
         progress += (HSpeed / splineLength) * Time.deltaTime*(velocityVector.magnitude);
-
-        Vector3 directionVector = new Vector3(spline.GetDirection(progress).x*HSpeed, spline.GetDirection(progress).z *HSpeed, 0);
+        Vector3 directionVector = Vector3.zero;
+        if (spline != null)
+        directionVector = new Vector3(spline.GetDirection(progress).x*HSpeed, spline.GetDirection(progress).z *HSpeed, 0);
+        else
+        directionVector = new Vector3(HSpeed, 0, 0);
 
         if (directionVector != Vector3.zero)
         {
