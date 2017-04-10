@@ -7,6 +7,7 @@ public class HideObjects : MonoBehaviour
 
     public Transform WatchTarget;
     public LayerMask OccluderMask;
+    public float thickness;
 
     private List<Transform> _LastTransforms;
 
@@ -26,8 +27,9 @@ public class HideObjects : MonoBehaviour
         }
 
         //Cast a ray from this object's transform the the watch target's transform.
-        RaycastHit[] hits = Physics.RaycastAll(
+        RaycastHit[] hits = Physics.SphereCastAll(
             transform.position,
+            thickness,
             WatchTarget.transform.position - transform.position,
             Vector3.Distance(WatchTarget.transform.position, transform.position),
             OccluderMask
