@@ -37,6 +37,11 @@ public class PlatformInputController : MonoBehaviour
 
     // Update is called once per frame
 
+    public void setSplineLength()
+    {
+        //  splineLength = spline.CalculateSplineLength();
+        splineLength = 87.92f;
+    }
    
     void Update()
     {
@@ -46,7 +51,7 @@ public class PlatformInputController : MonoBehaviour
 
         if (spline != null && OnPath)
         {
-            splineLength = spline.CalculateSplineLength();
+            
             velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
             
