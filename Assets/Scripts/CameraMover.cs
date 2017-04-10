@@ -82,8 +82,8 @@ public class CameraMover : MonoBehaviour {
             newPosition += offset;
 
             transform.position = Vector3.Lerp(transform.position, newPosition, 0.1f * speed * newSpeed);
-            transform.LookAt(playerCharacter);
-            //transform.LookAt(playerCharacter);
+            Quaternion newRotation = Quaternion.LookRotation(playerCharacter.position - transform.position);
+            transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, 0.1f * speed * newSpeed);            //transform.LookAt(playerCharacter);
 
         }
 

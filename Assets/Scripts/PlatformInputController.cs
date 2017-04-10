@@ -12,6 +12,13 @@ public class PlatformInputController : MonoBehaviour
 {
     public bool autoRotate = true;
     public float maxRotationSpeed = 360.0f;
+    public float maxRecordTime = 10f;
+    public BezierSpline spline;
+    public float progress;
+    public float splineLength;
+    public Vector3 velocityVector;
+    public Vector3 directionVector = Vector3.zero;
+    public bool OnPath = false;
 
     [HideInInspector]
     public CharacterMotorNew motor;
@@ -30,13 +37,7 @@ public class PlatformInputController : MonoBehaviour
 
     // Update is called once per frame
 
-    public float maxRecordTime = 10f;
-    public BezierSpline spline;
-    public float progress;
-    public float splineLength;
-    public Vector3 velocityVector;
-    public Vector3 directionVector = Vector3.zero;
-    public bool OnPath = false;
+   
     void Update()
     {
         HSpeed = Input.GetAxis("Horizontal");
