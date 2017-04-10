@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 public class CharacterMotorNew : MonoBehaviour
 {
+
     // Does this script currently respond to input?
     public bool canControl = true;
     public bool useFixedUpdate = true;
@@ -209,7 +210,6 @@ public class CharacterMotorNew : MonoBehaviour
 
         // Update velocity based on input
         velocity = ApplyInputVelocityChange(velocity);
-
         // Apply gravity and jumping force
         velocity = ApplyGravityAndJumping(velocity);
 
@@ -371,7 +371,7 @@ public class CharacterMotorNew : MonoBehaviour
         if (useFixedUpdate)
             UpdateFunction();
     }
-
+    public float progressMultiplier = 1;
     void Update()
     {
         if (!useFixedUpdate && canControl)
@@ -379,8 +379,9 @@ public class CharacterMotorNew : MonoBehaviour
 
         myAnimator.SetBool("Grounded", grounded);
         myAnimator.SetFloat("YVelocity", Mathf.Abs(movement.velocity.y));
-        transform.position = new Vector3(transform.position.x,transform.position.y,0);
     }
+
+   
 
     private Vector3 ApplyInputVelocityChange(Vector3 velocity)
     {

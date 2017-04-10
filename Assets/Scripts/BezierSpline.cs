@@ -196,4 +196,60 @@ public class BezierSpline : MonoBehaviour {
 			BezierControlPointMode.Free
 		};
 	}
+
+    public Vector3 Evaluate(float aTime)
+    {
+        var t = Mathf.Clamp01(aTime);
+        return (((-points[0] + 3 * (points[1] - points[2]) + points[3]) * t + (3 * (points[0] + points[2]) - 6 * points[1])) * t + 3 * (points[1] - points[0])) * t + points[0];
+    }
+
+    // Calculates the best fitting time in the given interval
+    private float CPOB(Vector3 aP, float aStart, float aEnd, int aSteps)
+    {
+        aStart = Mathf.Clamp01(aStart);
+        aEnd = Mathf.Clamp01(aEnd);
+        float step = (aEnd - aStart) / (float)aSteps;
+        float Res = 0;
+        float Ref = float.MaxValue;
+        for (int i = 0; i < aSteps; i++)
+        {
+            float t = aStart + step * i;
+            float L = (Evaluate(t) - aP).sqrMagnitude;
+            if (L < Ref)
+            {
+                Ref = L;
+                Res = t;
+            }
+        }
+        return Res;
+    }
+
+    public float ClosestTimeOnBezier(Vector3 aP)
+    {
+        float t = CPOB(aP, 0, 1, 10);
+        float delta = 1.0f / 10.0f;
+        for (int i = 0; i < 4; i++)
+        {
+            t = CPOB(aP, t - delta, t + delta, 10);
+            delta /= 9;//10;
+        }
+        return t;
+    }
+
+    public Vector3 ClosestPointOnBezier(Vector3 aP)
+    {
+        return Evaluate(ClosestTimeOnBezier(aP));
+    }
+
+    public float CalculateSplineLength()
+    {
+        int steps = 100 * ControlPointCount;
+        float stepLength = 0.5f;
+        float splineLengthInternal = 0;
+        for (float i = 0; i < steps; i += stepLength)
+        {
+            splineLengthInternal += Vector3.Distance(GetPoint(i), GetPoint((i + stepLength)));
+        }
+        return splineLengthInternal;
+    }
 }

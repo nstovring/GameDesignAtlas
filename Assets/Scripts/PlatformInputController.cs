@@ -31,14 +31,19 @@ public class PlatformInputController : MonoBehaviour
     // Update is called once per frame
 
     public float maxRecordTime = 10f;
-
-    //public float 
-    float curRecordTime;
+    public BezierSpline spline;
+    public float progress;
+    public float splineLength;
+    public Vector3 velocityVector;
     void Update()
     {
-         HSpeed = Input.GetAxis("Horizontal");
+        HSpeed = Input.GetAxis("Horizontal");
         // Get the input vector from kayboard or analog stick
-        Vector3 directionVector = new Vector3(HSpeed, 0, 0);
+        splineLength = spline.CalculateSplineLength();
+        velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
+        progress += (HSpeed / splineLength) * Time.deltaTime*(velocityVector.magnitude);
+
+        Vector3 directionVector = new Vector3(spline.GetDirection(progress).x*HSpeed, spline.GetDirection(progress).z *HSpeed, 0);
 
         if (directionVector != Vector3.zero)
         {
@@ -67,6 +72,7 @@ public class PlatformInputController : MonoBehaviour
 
         // Apply the direction to the CharacterMotor
         motor.inputMoveDirection = directionVector;
+
         motor.inputJump = Input.GetButton("Jump");
 
         // Set rotation to the move direction	
@@ -74,6 +80,8 @@ public class PlatformInputController : MonoBehaviour
         {
             Vector3 newForward = ConstantSlerp(transform.forward, directionVector, maxRotationSpeed * Time.deltaTime);
             newForward = ProjectOntoPlane(newForward, transform.up);
+            //Debug.DrawRay(transform.position, newForward, Color.green);
+
             transform.rotation = Quaternion.LookRotation(newForward, transform.up);
         }
     }
