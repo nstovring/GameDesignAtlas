@@ -39,8 +39,8 @@ public class PlatformInputController : MonoBehaviour
 
     public void setSplineLength()
     {
-        //  splineLength = spline.CalculateSplineLength();
-        splineLength = 87.92f;
+          splineLength = spline.CalculateSplineLength();
+       // splineLength = 78f;
     }
    
     void Update()
@@ -61,7 +61,7 @@ public class PlatformInputController : MonoBehaviour
             {
                 OnPath = false;
                 Camera.main.GetComponent<CameraMover>().SplineMovement = false;
-                Camera.main.GetComponent<CameraMover>().offset += transform.position;
+              
             }
         }
 

@@ -2,31 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplineWalker : MonoBehaviour {
+public class SplineWalker : MonoBehaviour
+{
 
-    public SplineWalkerMode mode;
     public BezierSpline spline;
-    public Transform player;
+
+    public float duration;
+    public bool lookForward;
+    public bool stayLevel;
+    public SplineWalkerMode mode;
 
     private bool goingForward = true;
-    public float progress;
-    public float HSpeed;
-    public float splineLength;
-    public bool lookForward;
 
-    private void Start()
-    {
-        splineLength = spline.CalculateSplineLength();
-
-    }
+    private float progress;
 
     private void Update()
     {
-        HSpeed = Input.GetAxis("Horizontal");
         if (goingForward)
         {
-            progress += (HSpeed / splineLength) * Time.deltaTime * (HSpeed);
-           // progress += Time.deltaTime * HSpeed;
+
+            progress += Time.deltaTime / duration;
             if (progress > 1f)
             {
                 if (mode == SplineWalkerMode.Once)
@@ -42,29 +37,33 @@ public class SplineWalker : MonoBehaviour {
                     progress = 2f - progress;
                     goingForward = false;
                 }
+
             }
         }
         else
         {
-
-
-            progress -= Time.deltaTime / HSpeed;
+            progress -= Time.deltaTime / duration;
             if (progress < 0f)
             {
                 progress = -progress;
                 goingForward = true;
             }
         }
-
         Vector3 position = spline.GetPoint(progress);
         transform.localPosition = position;
-        if (lookForward)
+       
+        if(lookForward && stayLevel)
+        {
+            Debug.Log("should draw line");
+            Vector3 tempRot = new Vector3(spline.GetDirection(progress).x, 0f, spline.GetDirection(progress).z);
+            transform.LookAt(position + tempRot);
+            // Quaternion newRotation = Quaternion.LookRotation(position + spline.GetDirection(progress), Vector3.up);
+
+        }
+        else if (lookForward)
         {
             transform.LookAt(position + spline.GetDirection(progress));
         }
-        else
-        {
-            transform.LookAt(player);
-        }
     }
+
 }

@@ -21,13 +21,25 @@ public class SplineCameraDummy : MonoBehaviour {
 	void Update () {
 
 
-        if (Input.GetKey(KeyCode.W)) {
-            print("W");
+        if (Input.GetKey(KeyCode.D)) {
+            print("D");
 
             this.transform.RotateAround(lookAt.position, Vector3.up, (HozSpeed * Time.deltaTime) * -1);
 
             Vector3 tmp = this.transform.position;
             tmp.y += VerSpeed * Time.deltaTime;
+
+            this.transform.position = tmp;
+
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            print("A");
+
+            this.transform.RotateAround(lookAt.position, Vector3.down, (HozSpeed * Time.deltaTime) * -1);
+
+            Vector3 tmp = this.transform.position;
+            tmp.y -= VerSpeed * Time.deltaTime;
 
             this.transform.position = tmp;
 

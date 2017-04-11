@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class GateWay : MonoBehaviour, ILinkable {
     public Animator animator;
+    public bool open = false;
     public void Activate()
     {
+        open = true;
         animator.SetBool("Open", true);
     }
 
     public void Deactivate()
     {
+        open = false;
         animator.SetBool("Open", false);
     }
 
