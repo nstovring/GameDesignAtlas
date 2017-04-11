@@ -55,8 +55,10 @@ public class SplineWalker : MonoBehaviour
         if(lookForward && stayLevel)
         {
             Debug.Log("should draw line");
-            Quaternion newRotation = Quaternion.LookRotation(position + spline.GetDirection(progress));
-            
+            Vector3 tempRot = new Vector3(spline.GetDirection(progress).x, 0f, spline.GetDirection(progress).z);
+            transform.LookAt(position + tempRot);
+            // Quaternion newRotation = Quaternion.LookRotation(position + spline.GetDirection(progress), Vector3.up);
+
         }
         else if (lookForward)
         {
