@@ -61,7 +61,7 @@ public class PlatformInputController : MonoBehaviour
             {
                 OnPath = false;
                 Camera.main.GetComponent<CameraMover>().SplineMovement = false;
-                Camera.main.GetComponent<CameraMover>().offset += transform.position;
+              
             }
         }
 

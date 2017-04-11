@@ -2,18 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class HideObjects : MonoBehaviour
+public class HideObjectsShader : MonoBehaviour
 {
 
     public Transform WatchTarget;
     public LayerMask OccluderMask;
+    //This is the material with the Transparent/Diffuse With Shadow shader
+    public Material HiderMaterial;
     public float thickness;
 
-    private List<Transform> _LastTransforms;
+    private Dictionary<Transform, Material> _LastTransforms;
 
     void Start()
     {
-        _LastTransforms = new List<Transform>();
+        _LastTransforms = new Dictionary<Transform, Material>();
     }
 
     void Update()
@@ -21,9 +23,11 @@ public class HideObjects : MonoBehaviour
         //reset and clear all the previous objects
         if (_LastTransforms.Count > 0)
         {
-            foreach (Transform t in _LastTransforms)
-                t.GetComponent<MeshRenderer>().enabled = true;
-                _LastTransforms.Clear();
+            foreach (Transform t in _LastTransforms.Keys)
+            {
+                t.GetComponent<Renderer>().material = _LastTransforms[t];
+            }
+            _LastTransforms.Clear();
         }
 
         //Cast a ray from this object's transform the the watch target's transform.
@@ -38,13 +42,12 @@ public class HideObjects : MonoBehaviour
         //Loop through all overlapping objects and disable their mesh renderer
         if (hits.Length > 0)
         {
-            print("COME ONE BABA");
             foreach (RaycastHit hit in hits)
             {
-                if (hit.collider.gameObject.transform != WatchTarget && hit.collider.transform.root != WatchTarget && hit.collider.gameObject.tag != "IGNORE")
+                if (hit.collider.gameObject.transform != WatchTarget && hit.collider.transform.root != WatchTarget)
                 {
-                    hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
-                    _LastTransforms.Add(hit.collider.gameObject.transform);
+                    _LastTransforms.Add(hit.collider.gameObject.transform, hit.collider.gameObject.GetComponent<Renderer>().material);
+                    hit.collider.GetComponent<Renderer>().material = HiderMaterial;
                 }
             }
         }
