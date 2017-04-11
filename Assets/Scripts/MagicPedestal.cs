@@ -33,7 +33,7 @@ public class MagicPedestal : MonoBehaviour, IInteractable {
             if (LevelManager.lm.spherescollected > 0)
             {
                 transform.GetChild(0).gameObject.SetActive(true);
-                LevelManager.lm.spherescollected--;
+                //LevelManager.lm.spherescollected--;
                 hasOrb = true;
             }
         }

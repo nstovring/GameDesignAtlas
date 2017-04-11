@@ -8,34 +8,42 @@ public class CircleWallGridGenerator : MonoBehaviour
 {
     public int numObjects;
     public int radius;
+    public int amount;
+
     public GameObject prefab;
 
     void Start()
     {
-        Vector3 center = transform.position;
+        Vector3 center = this.transform.position;
         float tmp = 0;
         float tmp2 = 360 / numObjects;
 
-        for (int i = 0; i < numObjects; i++)
-        {
-       
+        for (int j = 0; j < amount; j++) {
 
-            Vector3 pos = RandomCircle(center, radius, tmp);
-            // make the object face the center
-            Quaternion rot = Quaternion.FromToRotation(Vector3.forward, center - pos);
+            for (int i = 0; i < numObjects; i++)
+            {
 
-            Instantiate(prefab, pos, rot);
-            tmp += tmp2;
+
+                Vector3 pos = RandomCircle(center, radius, tmp);
+                // make the object face the center
+                Quaternion rot = Quaternion.FromToRotation(Vector3.forward, center - pos);
+
+                GameObject shelf = Instantiate(prefab, pos, rot);
+                shelf.transform.parent = transform;
+                tmp += tmp2;
+
+            }
+
+            center.y += 2.5f;
 
         }
+     
 
 
 
     }
 
-   Vector3 RandomCircle (Vector3 center, float radius, float ang) { // create random angle between 0 to 360 degrees 
-        //var ang = Random.value * 360;
-
+   Vector3 RandomCircle (Vector3 center, float radius, float ang) {
         Vector3 pos; 
         pos.x = center.x + radius * Mathf.Sin(ang * Mathf.Deg2Rad);
         pos.y = center.y;
