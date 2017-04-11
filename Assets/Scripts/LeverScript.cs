@@ -26,7 +26,7 @@ public class LeverScript : MonoBehaviour, IInteractable {
     {
         activated = true;
         linkedScript.Activate();
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(5);
         linkedScript.Deactivate();
         activated = false;
     }
