@@ -6,9 +6,10 @@ using System.Collections;
 [ExecuteInEditMode] 
 public class CircleWallGridGenerator : MonoBehaviour
 {
-    public int numObjects;
+    public float numObjects;
     public int radius;
     public int amount;
+    public float heightOffset;
 
     public GameObject prefab;
 
@@ -28,13 +29,18 @@ public class CircleWallGridGenerator : MonoBehaviour
                 // make the object face the center
                 Quaternion rot = Quaternion.FromToRotation(Vector3.forward, center - pos);
 
+                print(pos.y);
+
                 GameObject shelf = Instantiate(prefab, pos, rot);
                 shelf.transform.parent = transform;
                 tmp += tmp2;
-
+                print(tmp);
             }
+            print(tmp2);
 
-            center.y += 2.5f;
+            radius += 2;
+
+            //center.y += heightOffset;
 
         }
      
