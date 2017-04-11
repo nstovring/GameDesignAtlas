@@ -1,19 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ElevatorScript : MonoBehaviour {
+public class ElevatorScript : MonoBehaviour, ILinkable {
 
 
 
     public bool StartElevator;
+    public bool SetHeightOnActivation;
+    public float newUpperLimit;
 
     [Header("Elevator Settings")]
     public float ElevatorSpeed;
     public float upperLimit;
     public float lowerLimit;
-
+    float oldUpperLimit;
     private bool UpwardsOrDownwards;
         
     [Header("Elevator Direction, set false for x axis, and true for y axis")]
@@ -23,6 +26,7 @@ public class ElevatorScript : MonoBehaviour {
     {
         //Initialization();
         UpwardsOrDownwards = false;
+        oldUpperLimit = upperLimit;
     }
 
 
@@ -118,5 +122,19 @@ public class ElevatorScript : MonoBehaviour {
             this.transform.position = tmp;
         }
 
+    }
+
+    public void Activate()
+    {
+        if (!SetHeightOnActivation)
+            StartElevator = true;
+        else upperLimit = newUpperLimit;
+    }
+
+    public void Deactivate()
+    {
+        if (!SetHeightOnActivation)
+            StartElevator = false;
+        else upperLimit = oldUpperLimit;
     }
 }

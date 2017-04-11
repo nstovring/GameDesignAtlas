@@ -39,8 +39,8 @@ public class PlatformInputController : MonoBehaviour
 
     public void setSplineLength()
     {
-        //  splineLength = spline.CalculateSplineLength();
-        splineLength = 87.92f;
+          splineLength = spline.CalculateSplineLength();
+       // splineLength = 78f;
     }
    
     void Update()
