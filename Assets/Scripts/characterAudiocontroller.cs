@@ -40,7 +40,7 @@ public class characterAudiocontroller : MonoBehaviour
         //walking low amplitude
         //if (amplitude < 1)
         //{
-            audio.clip = audioClips[foot];
+            audio.clip = audioClips[0];
             audio.volume = amplitude * Random.Range(0.7f,1.4f);
         //audio.pitch = Random.Range(0.5f, 1.5f) -amplitude/2;
             audio.Play();
