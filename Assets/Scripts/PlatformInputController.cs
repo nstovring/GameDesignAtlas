@@ -42,6 +42,18 @@ public class PlatformInputController : MonoBehaviour
           splineLength = spline.CalculateSplineLength();
        // splineLength = 78f;
     }
+
+    public void startSplineMovement(BezierSpline spline)
+    {
+        transform.position = spline.transform.position;
+        progress = 0f;
+        directionVector = new Vector3(0f, 0f, 0f);
+        velocityVector = new Vector3(0f, 0f, 0f);
+
+        this.spline = spline;
+        setSplineLength();
+        OnPath = true;
+    }
    
     void Update()
     {
@@ -51,18 +63,19 @@ public class PlatformInputController : MonoBehaviour
 
         if (spline != null && OnPath)
         {
-            
+
+            if (progress > 1)
+            {
+                OnPath = false;
+                Camera.main.GetComponent<CameraMover>().SplineMovement = false;
+
+            }
             velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
             
             directionVector = new Vector3(spline.GetDirection(progress).x * HSpeed,  0, spline.GetDirection(progress).z * HSpeed);
 
-            if(progress > 1)
-            {
-                OnPath = false;
-                Camera.main.GetComponent<CameraMover>().SplineMovement = false;
-              
-            }
+           
         }
 
         //  directionVector = new Vector3(spline.GetDirection(progress).x * HSpeed, spline.GetDirection(progress).z * HSpeed, 0);
