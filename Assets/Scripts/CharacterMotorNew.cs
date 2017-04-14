@@ -706,6 +706,11 @@ public class CharacterMotorNew : MonoBehaviour
             LevelManager.lm.restartLevel();
         }
 
+        if (other.transform.tag == "Platform")
+        {
+            transform.parent = other.transform;
+        }
+
     }
 
     void OnTriggerStay(Collider other)
@@ -740,6 +745,11 @@ public class CharacterMotorNew : MonoBehaviour
         if (other.transform.tag == "ElevatorField")
         {
             movement.gravity = 9.8f;
+        }
+
+        if (other.transform.tag == "Platform")
+        {
+            transform.parent = null;
         }
     }
 

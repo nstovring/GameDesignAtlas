@@ -13,6 +13,8 @@ public class LightTrigger : MonoBehaviour {
     public Color colorB;
 
     public Light light;
+
+    public float volumetricNoiseIntensity = 1;
     // Use this for initialization
     void Start () {
 		
@@ -44,15 +46,18 @@ public class LightTrigger : MonoBehaviour {
     IEnumerator AmbientLerp()
     {
         float ambientIntensity = RenderSettings.ambientIntensity;
-
+        float currentVolumetricNoiseIntensity = light.GetComponent<VolumetricLight>().NoiseIntensity;
         while (ambientIntensity != newAmbientIntensity)
         {
             ambientIntensity = Mathf.Lerp(ambientIntensity, newAmbientIntensity, 0.01f);
+            currentVolumetricNoiseIntensity = Mathf.Lerp(currentVolumetricNoiseIntensity, volumetricNoiseIntensity, 0.01f);
             if (Mathf.Abs(ambientIntensity-newAmbientIntensity) <= 0.1f)
             {
                 ambientIntensity = newAmbientIntensity;
+                currentVolumetricNoiseIntensity = volumetricNoiseIntensity;
                 //RenderSettings.ambientIntensity = newAmbientIntensity;
             }
+            light.GetComponent<VolumetricLight>().NoiseIntensity = currentVolumetricNoiseIntensity;
            RenderSettings.ambientIntensity = ambientIntensity;
            yield return new WaitForSeconds(0.01f);
         }
