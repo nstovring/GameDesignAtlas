@@ -15,6 +15,7 @@ public class LightTrigger : MonoBehaviour {
     public Light light;
 
     public float volumetricNoiseIntensity = 1;
+    public bool heightFog = false;
     // Use this for initialization
     void Start () {
 		
@@ -34,6 +35,7 @@ public class LightTrigger : MonoBehaviour {
         StartCoroutine(RotationLerp());
         StartCoroutine(ColorLerp());
         StartCoroutine(AmbientLerp());
+        light.GetComponent<VolumetricLight>().HeightFog = heightFog;
     }
 
     public void OnTriggerExit(Collider other)

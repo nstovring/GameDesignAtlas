@@ -16,6 +16,8 @@ public class SplineWalker : MonoBehaviour
 
     private float progress;
 
+    public Transform lookatObject;
+
     private void Update()
     {
         if (goingForward)
@@ -51,7 +53,10 @@ public class SplineWalker : MonoBehaviour
         }
         Vector3 position = spline.GetPoint(progress);
         transform.localPosition = position;
-       
+       if(lookatObject != null)
+        {
+            transform.LookAt(lookatObject);
+        }
         if(lookForward && stayLevel)
         {
             Debug.Log("should draw line");
