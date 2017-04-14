@@ -22,13 +22,51 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
     [Header("Elevator Direction, set false for x axis, and true for y axis")]
     public bool XorY;
 
+    public List<Renderer> elevatorLights;
+    private Color elevatorLightColor;
+
     void Start()
     {
         //Initialization();
+        if (elevatorLights.Count == 0)
+        {
+            Debug.Log("No Renderer attatched!");
+        }
+        else
+        {
+            elevatorLightColor = elevatorLights[0].material.GetColor("_EmissionColor");
+        }
         UpwardsOrDownwards = false;
         oldUpperLimit = upperLimit;
+
+        SetState(StartElevator);
+        //if (StartElevator)
+        //{
+        //    Activate();
+        //}
+        //else
+        //{
+        //    Deactivate();
+        //}
     }
 
+    void ChangeLights(bool lightState)
+    {
+        if (lightState)
+        {
+            foreach (var item in elevatorLights)
+            {
+                item.material.SetColor("_EmissionColor", elevatorLightColor);
+            }
+        }
+        else
+        {
+            foreach (var item in elevatorLights)
+            {
+                item.material.SetColor("_EmissionColor", Color.black);
+            }
+        }
+    }
 
     void Update () {
 
@@ -124,17 +162,34 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
 
     }
 
+    public void SetState(bool state)
+    {
+        ChangeLights(state);
+    }
+
     public void Activate()
     {
+
         if (!SetHeightOnActivation)
+        {
             StartElevator = true;
-        else upperLimit = newUpperLimit;
+            ///elevatorLight.material.SetColor("_EmissionColor", elevatorLightColor);
+        }
+        else{
+            upperLimit = newUpperLimit;
+        }
     }
 
     public void Deactivate()
     {
         if (!SetHeightOnActivation)
+        {
             StartElevator = false;
-        else upperLimit = oldUpperLimit;
+            //elevatorLight.material.SetColor("_EmissionColor", Color.black);
+        }
+        else
+        {
+            upperLimit = oldUpperLimit;
+        }
     }
 }
