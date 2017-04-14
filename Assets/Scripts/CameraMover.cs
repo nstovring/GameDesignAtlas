@@ -34,13 +34,12 @@ public class CameraMover : MonoBehaviour {
         if (SplineMovement)
         {
             newPosition += offset;
-           // transform.position = Vector3.Lerp(transform.position, newPosition, 0.1f * speed * newSpeed);
-           
+                 
 
             Vector3 CameraOrthogonalPlayer = Vector3.Cross(playerCharacter.transform.forward, playerCharacter.transform.up);
             Debug.DrawRay(transform.position, CameraOrthogonalPlayer * 10, Color.red);
 
-//             sign = Mathf.Sign(Vector3.Cross(CameraOrthogonalPlayer, transform.forward).y);
+//           
 
             Debug.DrawRay(transform.position, Vector3.Cross(playerCharacter.transform.forward, transform.forward) * 10, Color.green);
 
@@ -48,22 +47,15 @@ public class CameraMover : MonoBehaviour {
             {
               transform.position =  (playerCharacter.transform.position - (HSpeed * CameraOrthogonalPlayer)*10) + offset;
                 transform.position = Vector3.Lerp(transform.position, (playerCharacter.transform.position - (HSpeed * CameraOrthogonalPlayer) * 10) + offset, 0.1f * speed * newSpeed);
-
-               // transform.LookAt(playerCharacter);
+                      
 
                 Quaternion newRotation = Quaternion.LookRotation( playerCharacter.position - transform.position);
                 transform.rotation = Quaternion.Lerp(transform.rotation, newRotation, 0.1f * speed * newSpeed);
 
-                //lerp to look and position
+                
             }
+                    
             
-
-
-
-           
-
-            //  if(sign > 0)
-            //  transform.rotation = Quaternion.LookRotation( CameraOrthogonalPlayer);
 
 
         }
@@ -73,7 +65,7 @@ public class CameraMover : MonoBehaviour {
 
 
 
-            //speed = Mathf.Lerp(speed, newSpeed, 0.1f);
+          
             Vector3 playerScreenPos = Camera.main.WorldToScreenPoint(newPosition);
             
             newPosition.z = 0;
