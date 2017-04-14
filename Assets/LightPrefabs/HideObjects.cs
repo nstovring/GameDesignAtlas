@@ -38,7 +38,7 @@ public class HideObjects : MonoBehaviour
         //Loop through all overlapping objects and disable their mesh renderer
         if (hits.Length > 0)
         {
-            print("COME ONE BABA");
+            //print("COME ONE BABA");
             foreach (RaycastHit hit in hits)
             {
                 if (hit.collider.gameObject.transform != WatchTarget && hit.collider.transform.root != WatchTarget && hit.collider.gameObject.tag != "IGNORE")
