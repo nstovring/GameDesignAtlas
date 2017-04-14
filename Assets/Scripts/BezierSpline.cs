@@ -252,4 +252,24 @@ public class BezierSpline : MonoBehaviour {
         }
         return splineLengthInternal;
     }
+
+
+    public Vector3 GetNearestPoint(Vector3 pos)
+    {
+        int steps = 100 * ControlPointCount;
+        float stepLength = 0.05f;
+        float splineLengthInternal = 0;
+        Vector3 currentClosestVector = Vector3.zero;
+        float currentSmallestDist = 5;
+        for (float i = 0; i < steps; i += stepLength)
+        {
+            //splineLengthInternal += Vector3.Distance(GetPoint(i), GetPoint((i + stepLength)));
+            if(Vector3.Distance(pos, GetPoint(i))< currentSmallestDist)
+            {
+                currentSmallestDist = Vector3.Distance(pos, GetPoint(i));
+                currentClosestVector = GetPoint(i);
+            }
+        }
+        return currentClosestVector;
+    }
 }
