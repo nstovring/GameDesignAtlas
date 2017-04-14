@@ -33,4 +33,5 @@ public class UITriggerScript : MonoBehaviour, IInteractable {
 	void Update () {
 		
 	}
+    
 }

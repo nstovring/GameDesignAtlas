@@ -10,6 +10,8 @@ public class CameraMover : MonoBehaviour {
     public Vector3 rotationOffset = Vector3.zero;
     public bool SplineMovement = false;
     public float HSpeed;
+
+    public bool followPlayer;
 	// Use this for initialization
 	void Start () {
         //offset = transform.position;
@@ -20,16 +22,25 @@ public class CameraMover : MonoBehaviour {
 	// Update is called once per frame
 	void LateUpdate () {
         
-       
         FollowPlayer();
 	}
 
     public float speed = 1;
     public float newSpeed = 1;
     public float sign = 0f;
+
+    public Vector3 staticPosition;
     void FollowPlayer()
     {
-        Vector3 newPosition = playerCharacter.position;
+        Vector3 newPosition = Vector3.zero;
+        if (followPlayer)
+        {
+            newPosition = playerCharacter.position;
+        }
+        else
+        {
+            newPosition = staticPosition;
+        }
         HSpeed = Input.GetAxis("Horizontal");
 
         if (SplineMovement)

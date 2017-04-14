@@ -13,6 +13,8 @@ public class CameraTrigger : MonoBehaviour{
 
     private CameraMover cameraMover;
 
+    public bool followPlayer = true;
+
     public void Interact()
     {
         cameraMover.offset = cameraOffset;
@@ -26,13 +28,25 @@ public class CameraTrigger : MonoBehaviour{
 
     public void OnTriggerEnter(Collider other)
     {
-        cameraMover.newSpeed = 0.2f;
-        cameraMover.offset = cameraOffset;
-        cameraMover.rotationOffset = cameraRotation;
+        if (followPlayer)
+        {
+            cameraMover.newSpeed = 0.2f;
+            cameraMover.offset = cameraOffset;
+            cameraMover.rotationOffset = cameraRotation;
+        }
+        else
+        {
+            cameraMover.followPlayer = followPlayer;
+            cameraMover.staticPosition = transform.position;
+            cameraMover.newSpeed = 0.2f;
+            cameraMover.offset = cameraOffset;
+            cameraMover.rotationOffset = cameraRotation;
+        }
     }
 
     public void OnTriggerExit(Collider other)
     {
+        cameraMover.followPlayer = true;
         cameraMover.offset = defaultCameraOffset;
         cameraMover.rotationOffset = defaultCameraRotation;
         StartCoroutine(DelayedSpeedReset());

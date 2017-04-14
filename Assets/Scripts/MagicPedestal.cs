@@ -59,6 +59,17 @@ public class MagicPedestal : MonoBehaviour, IInteractable {
         {
             LinkedObjects.Add(item.GetComponent<MonoBehaviour>() as ILinkable);
         }
+
+        if (hasOrb)
+        {
+            if (transform.childCount > 0)
+                transform.GetChild(0).gameObject.SetActive(true);
+        }
+        else
+        {
+            if (transform.childCount > 0)
+                transform.GetChild(0).gameObject.SetActive(false);
+        }
 	}
 	
 	// Update is called once per frame
