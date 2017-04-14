@@ -10,6 +10,10 @@ public class Climbing : StateMachineBehaviour {
         animator.SetBool("IsHanging", false);
         animator.SetBool("Climbing", true);
         //animator.applyRootMotion = true;
+        if(animator.transform.parent == null)
+        {
+            animator.transform.parent = animator.transform.GetComponent<CharacterMotorNew>().colidingObject;
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -28,8 +32,10 @@ public class Climbing : StateMachineBehaviour {
         animator.SetBool("IsHanging", false);
         animator.SetBool("Climbing", false);
         myMotor.canControl = true;
+        animator.transform.parent = null;
+
         //myMotor.FinishedClimbing();
-       // animator.applyRootMotion = false;
+        // animator.applyRootMotion = false;
     }
 
     //OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here

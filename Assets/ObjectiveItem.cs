@@ -7,6 +7,12 @@ public class ObjectiveItem : InteractableObject {
     public enum ObjectiveItemType {Key, PowerCore, Artifact}
 
     public ObjectiveItemType type;
+    public GameObject ParticlePickupEffectTransform;
+    void Start()
+    {
+        if(ParticlePickupEffectTransform)
+        ParticlePickupEffectTransform.active = false;
+    }
     public override void Interact()
     {
         base.Interact();
@@ -25,9 +31,19 @@ public class ObjectiveItem : InteractableObject {
         {
             tempPedestal.Interact();
         }
+        float destroyTime = 0.5f;
+        if(type == ObjectiveItemType.PowerCore)
+        {
+            if (ParticlePickupEffectTransform)
+            {
+                ParticlePickupEffectTransform.active = true;
+                destroyTime = 1;
+            }
+
+        }
 
         //Debug.Log("key collected! nmb: " + LevelManager.lm.keyscollected);
-        Destroy(this.gameObject, 0.5f);
+        Destroy(this.gameObject, destroyTime);
         
 
     }
