@@ -662,7 +662,7 @@ public class CharacterMotorNew : MonoBehaviour
         movement.frameVelocity = Vector3.zero;
         SendMessage("OnExternalVelocity");
     }
-
+    public Transform colidingObject;
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.tag == "ElevatorField")
@@ -679,6 +679,7 @@ public class CharacterMotorNew : MonoBehaviour
                 myAnimator.applyRootMotion = true;
                 controller.enabled = false;
                 transform.position = other.GetComponent<Ledge>().GetHangingPosition(transform.position) - new Vector3(0, 1.44f, 0);
+                colidingObject = other.transform;
             }
             //Ledge = other.transform;
             //CurrentMoveType = MovementTypes.Hanging;
@@ -750,6 +751,10 @@ public class CharacterMotorNew : MonoBehaviour
         if (other.transform.tag == "Platform")
         {
             transform.parent = null;
+        }
+        if(other.transform.tag == "Ledge")
+        {
+            colidingObject = null;
         }
     }
 
