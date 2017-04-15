@@ -43,6 +43,7 @@ public class HideObjects : MonoBehaviour
             {
                 if (hit.collider.gameObject.transform != WatchTarget && hit.collider.transform.root != WatchTarget && hit.collider.gameObject.tag != "IGNORE")
                 {
+                    //hit.collider.gameObject.SetActive(false);
                     hit.collider.gameObject.GetComponent<MeshRenderer>().enabled = false;
                     _LastTransforms.Add(hit.collider.gameObject.transform);
                 }
