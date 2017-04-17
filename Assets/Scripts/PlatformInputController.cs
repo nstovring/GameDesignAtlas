@@ -54,7 +54,7 @@ public class PlatformInputController : MonoBehaviour
         setSplineLength();
         OnPath = true;
     }
-   
+    float splineZDirection;
     void Update()
     {
         HSpeed = Input.GetAxis("Horizontal");
@@ -72,11 +72,12 @@ public class PlatformInputController : MonoBehaviour
             }
             velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
-            Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + transform.forward*1,0.01f);
+            Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + transform.forward*3,0.01f);
+            splineZDirection = Mathf.Lerp(splineZDirection, nearestPointOnSpline.z, 0.01f);
             Debug.DrawLine(transform.position, nearestPointOnSpline, Color.red);
             //spline.GetNearestPoint(transform.position);
             Vector3 splineDirection = nearestPointOnSpline - transform.position;
-            directionVector = new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
+            directionVector = splineDirection * HSpeed;// new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
 
            
         }
