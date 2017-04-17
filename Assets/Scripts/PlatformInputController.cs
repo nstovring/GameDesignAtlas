@@ -45,7 +45,7 @@ public class PlatformInputController : MonoBehaviour
 
     public void startSplineMovement(BezierSpline spline)
     {
-        transform.position = spline.transform.position;
+        //transform.position = spline.transform.position;
         progress = 0f;
         directionVector = new Vector3(0f, 0f, 0f);
         velocityVector = new Vector3(0f, 0f, 0f);
@@ -74,12 +74,13 @@ public class PlatformInputController : MonoBehaviour
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
 
             Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + (Camera.main.transform.right * HSpeed)*3,0.01f);
+            //Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + (transform.forward) * 5, 0.01f);
             splineZDirection = Mathf.Lerp(splineZDirection, nearestPointOnSpline.z, 0.01f);
             Debug.DrawLine(transform.position, nearestPointOnSpline, Color.red);
             //spline.GetNearestPoint(transform.position);
             Vector3 splineDirection = nearestPointOnSpline - transform.position;
             Debug.DrawRay(transform.position, splineDirection * 5, Color.green);
-
+            splineDirection = new Vector3(splineDirection.x, 0, splineDirection.z);
             directionVector = splineDirection.normalized * Mathf.Abs(HSpeed);// new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
         }
 

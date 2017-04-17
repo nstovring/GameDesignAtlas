@@ -263,13 +263,28 @@ public class BezierSpline : MonoBehaviour {
         for (float i = 0; i < steps; i += stepLength)
         {
             //splineLengthInternal += Vector3.Distance(GetPoint(i), GetPoint((i + stepLength)));
-            if(Vector3.Distance(pos, GetPoint(i))< currentSmallestDist)
+            Vector3 point = GetPoint(i);
+            if ((point - pos).y < 5 && (point - pos).y > -5)
             {
-                currentSmallestDist = Vector3.Distance(pos, GetPoint(i));
-                currentClosestVector = GetPoint(i);
-                if(Vector3.Distance(pos, GetPoint(i)) > currentSmallestDist)
+                
+                point = new Vector3(point.x, pos.y,point.z);
+                /*if (Vector3.Distance(pos, GetPoint(i)) < currentSmallestDist)
                 {
-                    break;
+                    currentSmallestDist = Vector3.Distance(pos, GetPoint(i));
+                    currentClosestVector = GetPoint(i);
+                    if (Vector3.Distance(pos, GetPoint(i)) > currentSmallestDist)
+                    {
+                        break;
+                    }
+                }*/
+                if (Vector3.Distance(pos, point) < currentSmallestDist)
+                {
+                    currentSmallestDist = Vector3.Distance(pos, point);
+                    currentClosestVector = point;
+                    if (Vector3.Distance(pos, point) > currentSmallestDist)
+                    {
+                        break;
+                    }
                 }
             }
         }
