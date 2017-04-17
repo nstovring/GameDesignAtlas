@@ -16,12 +16,6 @@ public class TimeShifting : MonoBehaviour {
 	void Update () {
         if (CanPlayerTimeShift)
         {
-            if (Input.GetKeyDown("e"))
-            {
-                presentTime = !presentTime;
-                //Debug.Log("Time shifting! Present time = " + presentTime);
-                changeTime(presentTime);
-            }
         }
 	}
 

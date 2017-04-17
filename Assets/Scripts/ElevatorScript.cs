@@ -16,7 +16,7 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
     public float ElevatorSpeed;
     public float upperLimit;
     public float lowerLimit;
-    float oldUpperLimit;
+    public float oldUpperLimit;
     private bool UpwardsOrDownwards;
         
     [Header("Elevator Direction, set false for x axis, and true for y axis")]
@@ -24,6 +24,7 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
 
     public List<Renderer> elevatorLights;
     private Color elevatorLightColor;
+    public Transform heightTrigger;
 
     void Start()
     {
@@ -109,12 +110,12 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
 
     private void LeftRight() {
 
-        if (transform.position.x <= lowerLimit)
+        if (transform.localPosition.x <= lowerLimit)
         {
             UpwardsOrDownwards = true;
         }
 
-        if (transform.position.x >= upperLimit)
+        if (transform.localPosition.x >= upperLimit)
         {
             UpwardsOrDownwards = false;
         }
@@ -136,12 +137,12 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
 
     private void UpDown() {
 
-        if (transform.position.y <= lowerLimit)
+        if (transform.localPosition.y <= lowerLimit)
         {
             UpwardsOrDownwards = true;
         }
 
-        if (transform.position.y >= upperLimit)
+        if (transform.localPosition.y >= upperLimit)
         {
             UpwardsOrDownwards = false;
         }
@@ -176,7 +177,8 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
             ///elevatorLight.material.SetColor("_EmissionColor", elevatorLightColor);
         }
         else{
-            upperLimit = newUpperLimit;
+            heightTrigger.gameObject.active = true;
+            //upperLimit = newUpperLimit;
         }
     }
 
@@ -189,7 +191,8 @@ public class ElevatorScript : MonoBehaviour, ILinkable {
         }
         else
         {
-            upperLimit = oldUpperLimit;
+            heightTrigger.gameObject.active = false;
+            //upperLimit = oldUpperLimit;
         }
     }
 }
