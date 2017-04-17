@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour {
     float delay;
@@ -21,6 +22,9 @@ public class LevelManager : MonoBehaviour {
     public event TimeShiftHandler TimeShift;
 
     public TimeShifting timeShiftingClass;
+
+    public static bool gameStarted;
+    public Text startText;
     // Use this for initialization
     IEnumerator Start () {
 		lm = this;
@@ -38,19 +42,45 @@ public class LevelManager : MonoBehaviour {
         
         try {
             blindingShader = GetComponent<CameraBlinding>();
+            blindingShader.BlendWeight = 1;
         }
         catch
         {
             
         }
         yield return new WaitForSeconds(delay+ delay);
-      //  TimeShift(true);
-	}
+
+        while(blindingShader.BlendWeight > 0)
+        {
+            blindingShader.BlendWeight = Mathf.Lerp(blindingShader.BlendWeight, 0, 0.05f);
+            yield return new WaitForSeconds(delay);
+            if (blindingShader.BlendWeight < 0.01f)
+            {
+                blindingShader.BlendWeight = 0;
+            }
+        }
+        //  TimeShift(true);
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(!gameStarted && Input.GetKeyDown(KeyCode.D))
+        {
+            startText.CrossFadeColor(Color.clear, 2, false, true);
+            gameStarted = true;
+            StartCoroutine(DelayedInstructions("Press \"Space\" To Jump", 4));
+        }
 	}
+
+    public IEnumerator DelayedInstructions(string instructions, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        startText.text = instructions;
+        startText.CrossFadeColor(Color.white, delay, false, true);
+        yield return new WaitForSeconds(delay);
+        startText.CrossFadeColor(Color.clear, 2, false, true);
+    }
+
     public void SetObjectivesGathered(ObjectiveItem.ObjectiveItemType type)
     {
         if (type == ObjectiveItem.ObjectiveItemType.Key)

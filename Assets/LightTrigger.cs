@@ -33,7 +33,7 @@ public class LightTrigger : MonoBehaviour {
         //cameraMover.offset = cameraOffset;
         //light.transform.rotation = Quaternion.Euler(lightRotation);
         StartCoroutine(RotationLerp());
-        StartCoroutine(ColorLerp());
+        StartCoroutine(LerpColor());
         StartCoroutine(AmbientLerp());
         light.GetComponent<VolumetricLight>().HeightFog = heightFog;
     }
@@ -66,26 +66,24 @@ public class LightTrigger : MonoBehaviour {
     }
 
 
-        IEnumerator ColorLerp()
+    float duration = 5; // This will be your time in seconds.
+    float smoothness = 0.02f; // This will determine the smoothness of the lerp. Smaller values are smoother. Really it's the time between updates.
+    Color currentColor = Color.white; // This is the state of the color in the current interpolation.
+
+
+    IEnumerator LerpColor()
     {
-        Quaternion quatLightDir = Quaternion.Euler(lightRotation);
-        Color currentColor = light.color;
-        Vector3 currentColorVec = new Vector3(currentColor.r, currentColor.g, currentColor.b);
-        Vector3 NewColorVector = new Vector3(colorB.r, colorB.g, colorB.b);
-
-        while (currentColor != colorB)
+        float progress = 0; //This float will serve as the 3rd parameter of the lerp function.
+        float increment = smoothness / duration; //The amount of change to apply.
+        while (progress < 1)
         {
-            currentColor = Color.Lerp(currentColor, colorB, 0.005f);
-            currentColorVec = new Vector3(currentColor.r, currentColor.g, currentColor.b);
-            if (Vector3.Distance(currentColorVec, NewColorVector) <= 0.01f)
-            {
-                currentColor = colorB;
-            }
+            currentColor = Color.Lerp(colorA,colorB, progress);
+            progress += increment;
             light.color = currentColor;
-
-            yield return new WaitForSeconds(0.01f);
+            yield return new WaitForSeconds(smoothness);
         }
     }
+
 
     IEnumerator RotationLerp()
     {

@@ -7,7 +7,7 @@ SpeedTreeImporter:
   mainColor: {r: 1, g: 1, b: 1, a: 1}
   hueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
   alphaTestRef: 0.33
-  bestWindQuality: 0
+  bestWindQuality: 3
   hasBillboard: 1
   lODSettings:
   - height: 0.5
@@ -17,7 +17,7 @@ SpeedTreeImporter:
     reflectionProbeUsage: 1
     enableBump: 1
     enableHue: 1
-    windQuality: 0
+    windQuality: 3
   - height: 0.25
     castShadows: 1
     receiveShadows: 1
