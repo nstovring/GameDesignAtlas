@@ -72,9 +72,11 @@ public class PlatformInputController : MonoBehaviour
             }
             velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
-            Debug.DrawLine(transform.position, spline.GetNearestPoint(transform.position));
-            spline.GetNearestPoint(transform.position);
-            directionVector = new Vector3(HSpeed, 0, 0);// (spline.GetNearestPoint(transform.position)-transform.position)*HSpeed*0.5f;
+            Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + transform.forward*1,0.01f);
+            Debug.DrawLine(transform.position, nearestPointOnSpline, Color.red);
+            //spline.GetNearestPoint(transform.position);
+            Vector3 splineDirection = nearestPointOnSpline - transform.position;
+            directionVector = new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
 
            
         }
@@ -141,6 +143,6 @@ public class PlatformInputController : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        myAnimator.SetFloat("HSpeed", Mathf.Abs(HSpeed));
+        myAnimator.SetFloat("HSpeed", Mathf.Abs(motor.movement.velocity.magnitude));
     }
 }
