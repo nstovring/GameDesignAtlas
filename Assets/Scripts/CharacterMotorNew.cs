@@ -374,6 +374,29 @@ public class CharacterMotorNew : MonoBehaviour
     public float progressMultiplier = 1;
     void Update()
     {
+        
+        if(colidingObjects != null)
+        {
+            foreach (Transform t in colidingObjects)
+            {
+                if (t.tag == "PlayerInteractable")
+                {
+                    print("coliding object is interactable");
+                    if (Input.GetKeyUp(KeyCode.Q))
+                    {
+                        print("Q has been pressed");
+                        MonoBehaviour hitBehaviour = t.GetComponent<MonoBehaviour>();
+                        if (hitBehaviour is IInteractable)
+                        {
+                            Debug.Log("Interacting");
+
+                            IInteractable iObject = (IInteractable)hitBehaviour;
+                            iObject.Interact();
+                        }
+                    }
+                }
+            }
+        }
         if (!useFixedUpdate && canControl)
             UpdateFunction();
 
@@ -662,9 +685,11 @@ public class CharacterMotorNew : MonoBehaviour
         movement.frameVelocity = Vector3.zero;
         SendMessage("OnExternalVelocity");
     }
+    public List<Transform> colidingObjects;
     public Transform colidingObject;
     private void OnTriggerEnter(Collider other)
     {
+        colidingObjects.Add(other.transform);
         if (other.transform.tag == "ElevatorField")
         {
             SetVelocity(transform.up * 2);
@@ -724,7 +749,7 @@ public class CharacterMotorNew : MonoBehaviour
             //isLevitating = true;
         }
 
-        if (other.transform.tag == "PlayerInteractable")
+        /*if (other.transform.tag == "PlayerInteractable")
         {
 
             if (Input.GetKeyUp(KeyCode.Q))
@@ -738,11 +763,12 @@ public class CharacterMotorNew : MonoBehaviour
                     iObject.Interact();
                 }
             }
-        }
+        }*/
     }
 
     void OnTriggerExit(Collider other)
     {
+        colidingObjects.Remove(other.transform);
         if (other.transform.tag == "ElevatorField")
         {
             movement.gravity = 9.8f;
