@@ -15,6 +15,8 @@ public class CameraTrigger : MonoBehaviour{
 
     public bool followPlayer = true;
 
+    public float cameraSpeed = 0.2f;
+
     public void Interact()
     {
         cameraMover.offset = cameraOffset;
@@ -30,7 +32,7 @@ public class CameraTrigger : MonoBehaviour{
     {
         if (followPlayer)
         {
-            cameraMover.newSpeed = 0.2f;
+            cameraMover.newSpeed = cameraSpeed;
             cameraMover.offset = cameraOffset;
             cameraMover.rotationOffset = cameraRotation;
         }
