@@ -72,14 +72,15 @@ public class PlatformInputController : MonoBehaviour
             }
             velocityVector = new Vector3(motor.movement.velocity.x, 0, motor.movement.velocity.z);
             progress += (HSpeed / splineLength) * Time.deltaTime * (velocityVector.magnitude);
-            Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + transform.forward*3,0.01f);
+
+            Vector3 nearestPointOnSpline = spline.GetNearestPoint(transform.position + (Camera.main.transform.right * HSpeed)*3,0.01f);
             splineZDirection = Mathf.Lerp(splineZDirection, nearestPointOnSpline.z, 0.01f);
             Debug.DrawLine(transform.position, nearestPointOnSpline, Color.red);
             //spline.GetNearestPoint(transform.position);
             Vector3 splineDirection = nearestPointOnSpline - transform.position;
-            directionVector = splineDirection * HSpeed;// new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
+            Debug.DrawRay(transform.position, splineDirection * 5, Color.green);
 
-           
+            directionVector = splineDirection.normalized * Mathf.Abs(HSpeed);// new Vector3(HSpeed, 0, splineDirection.z);// + (transform.position- spline.GetNearestPoint(transform.position))*HSpeed*0.5f;
         }
 
         //  directionVector = new Vector3(spline.GetDirection(progress).x * HSpeed, spline.GetDirection(progress).z * HSpeed, 0);
@@ -87,7 +88,7 @@ public class PlatformInputController : MonoBehaviour
         {
             directionVector = new Vector3(HSpeed, 0, 0);
         }
-        Debug.DrawRay(transform.position, directionVector, Color.red );
+        //Debug.DrawRay(transform.position, directionVector, Color.red );
         
 
         if (directionVector != Vector3.zero)
