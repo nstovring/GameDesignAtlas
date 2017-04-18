@@ -23,7 +23,7 @@ public class LevelManager : MonoBehaviour {
 
     public TimeShifting timeShiftingClass;
 
-    public static bool gameStarted;
+    public bool gameStarted;
     public Text startText;
     // Use this for initialization
     IEnumerator Start () {
