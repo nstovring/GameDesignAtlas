@@ -41,7 +41,7 @@ public class Climbing : StateMachineBehaviour {
     //OnStateMove is called right after Animator.OnAnimatorMove(). Code that processes and affects root motion should be implemented here
     override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        animator.transform.position = animator.rootPosition;
+        animator.transform.position = new Vector3(animator.rootPosition.x, animator.rootPosition.y,0);
     }
 
     // OnStateIK is called right after Animator.OnAnimatorIK(). Code that sets up animation IK (inverse kinematics) should be implemented here.

@@ -46,15 +46,22 @@ public class HeightTrigger : MonoBehaviour {
     }
     IEnumerator GoToWhiteAndRestart()
     {
-        while(cameraBlindScript.BlendWeight < 1)
+        float progress = 0; //This float will serve as the 3rd parameter of the lerp function.
+        float increment = smoothness / duration; //The amount of change to apply.
+        while (progress < 1)
         {
-            cameraBlindScript.BlendWeight = Mathf.Lerp(cameraBlindScript.BlendWeight, 1, 0.007f);
-            if(cameraBlindScript.BlendWeight > 0.85)
+            cameraBlindScript.BlendWeight = Mathf.Lerp(cameraBlindScript.BlendWeight, 1, progress);
+            progress += increment *Time.deltaTime;
+
+            if (cameraBlindScript.BlendWeight > 0.85)
             {
                 cameraBlindScript.BlendWeight = 1;
             }
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(smoothness);
         }
         SceneManager.LoadScene(0);
     }
+
+    float duration = 20; // This will be your time in seconds.
+    float smoothness = 0.02f; // This will determine the smoothness of the lerp. Smaller values are smoother. Really it's the time between updates.
 }

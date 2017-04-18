@@ -381,14 +381,14 @@ public class CharacterMotorNew : MonoBehaviour
             {
                 if (t.tag == "PlayerInteractable")
                 {
-                    print("coliding object is interactable");
+                    //print("coliding object is interactable");
                     if (Input.GetKeyUp(KeyCode.Q))
                     {
-                        print("Q has been pressed");
+                        //print("Q has been pressed");
                         MonoBehaviour hitBehaviour = t.GetComponent<MonoBehaviour>();
                         if (hitBehaviour is IInteractable)
                         {
-                            Debug.Log("Interacting");
+                            //Debug.Log("Interacting");
 
                             IInteractable iObject = (IInteractable)hitBehaviour;
                             iObject.Interact();

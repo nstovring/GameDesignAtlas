@@ -146,6 +146,8 @@ public class PlatformInputController : MonoBehaviour
 
     private void OnAnimatorMove()
     {
-        myAnimator.SetFloat("HSpeed", Mathf.Abs(motor.movement.velocity.magnitude));
+        //myAnimator.SetFloat("HSpeed", Mathf.Abs(motor.movement.velocity.magnitude));
+        myAnimator.SetFloat("HSpeed", Mathf.Abs(HSpeed));
+
     }
 }
