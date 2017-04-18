@@ -7,7 +7,8 @@ public class ThreatObject : InteractableObject {
     {
         base.Interact();
 
-
+        GameObject.FindGameObjectWithTag("MainCamera").GetComponent<LevelManager>().gameStarted = false;
+        
         LevelManager.lm.restartLevel();
 
 
